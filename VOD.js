@@ -1,7 +1,7 @@
 var WidgetMetadata = {
   id: "vod",
   title: "VOD",
-  description: "获取 VOD 影视数据",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
   version: "1.1.0",
