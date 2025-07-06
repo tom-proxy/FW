@@ -3,7 +3,7 @@ var WidgetMetadata = {
   title: "VOD",
   description: "获取 VOD 影视数据",
   author: "🅣🅞🅜",
-  site: "https://github.com/bemarkt/scripts/tree/master/provider/Forward",
+  site: "@🅣🅞🅜",
   version: "1.1.0",
   requiredVersion: "0.0.1",
   modules: [
