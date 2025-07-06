@@ -49,6 +49,15 @@
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javrate.js"
     },
     {
+      "id": "xvideos",
+      "title": "XVideos",
+      "description": "⚝五折码：TOM.5⚝",
+      "requiredVersion": "0.0.1",
+      "version": "0.9.4",
+      "author": "🅣🅞🅜",
+      "url": "https://github.com/baranwang/forward-widget/releases/latest/download/xvideos.js"
+    },
+    {
       "id": "VOD",
       "title": "VOD",
       "description": "⚝五折码：TOM.5⚝",
