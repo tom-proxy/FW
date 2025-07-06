@@ -3,7 +3,7 @@ var WidgetMetadata = {
   title: "Podcast",
   version: "2.1.0",
   requiredVersion: "0.0.1",
-  description: "获取 RSS 播客数据",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
   modules: [
