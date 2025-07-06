@@ -3,7 +3,7 @@ var WidgetMetadata = {
     title: "电视台",
     description: "获取热门电视直播频道",
     author: "🅣🅞🅜",
-    site: "https://github.com/2kuai/ForwardWidgets",
+    site: "@🅣🅞🅜",
     version: "1.0.1",
     requiredVersion: "0.0.1",
     modules: [
