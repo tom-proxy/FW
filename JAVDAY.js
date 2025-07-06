@@ -3,7 +3,7 @@ var WidgetMetadata = {
   title: "JAVDay",
   description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
-  site: "https://javday.app",
+  site: "@🅣🅞🅜",
   version: "1.1.0",
   requiredVersion: "0.0.1",
   detailCacheDuration: 60,
