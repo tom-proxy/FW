@@ -5,7 +5,7 @@ var WidgetMetadata = {
   requiredVersion: "0.0.1",
   description: "获取 RSS 播客数据",
   author: "🅣🅞🅜",
-  site: "https://github.com/bemarkt/scripts/tree/master/provider/Forward",
+  site: "@🅣🅞🅜",
   modules: [
     {
       title: "播客订阅",
