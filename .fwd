@@ -31,7 +31,7 @@
       "url": "https://raw.githubusercontent.com/Madai-v/ForwardWidgets/refs/heads/main/Widgets/ph.js"
     },
     {
-      "id": "ti.bemarkt.javday",
+      "id": "JAVDay",
       "title": "JAVDay",
       "description": "获取 JAVDay 推荐",
       "requiredVersion": "0.0.1",
@@ -40,7 +40,7 @@
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javday.js"
     },
     {
-      "id": "ti.bemarkt.javrate",
+      "id": "JAVRate",
       "title": "JAVRate",
       "description": "获取 JAVRate 推荐",
       "requiredVersion": "0.0.1",
@@ -49,7 +49,7 @@
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javrate.js"
     },
     {
-      "id": "ti.bemarkt.vod.maccms",
+      "id": "VOD",
       "title": "VOD",
       "description": "获取 VOD 影视数据",
       "requiredVersion": "0.0.1",
@@ -58,7 +58,16 @@
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
     },
     {
-      "id": "ti.bemarkt.podcast",
+      "id": "movie_paradise",
+      "title": "在线影院",
+      "description": "获取在线电影、电视剧、动漫、综艺和短剧",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/MovieParadise.js"
+    },
+    {
+      "id": "RSS播客",
       "title": "RSS播客",
       "description": "获取 RSS 播客数据",
       "requiredVersion": "0.0.1",
