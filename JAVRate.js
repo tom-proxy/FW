@@ -1,7 +1,7 @@
 var WidgetMetadata = {
   id: "javrate",
   title: "JAVRate",
-  description: "获取 JAVRate 推荐",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "https://www.javrate.com/",
   version: "2.1.0",
