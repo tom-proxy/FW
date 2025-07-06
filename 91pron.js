@@ -757,6 +757,7 @@ WidgetMetadata = {
     description: '⚝五折码：TOM.5⚝',
     version: "0.9.4",
     requiredVersion: '0.0.1',
+    author: "🅣🅞🅜",
     site: '@🅣🅞🅜',
     detailCacheDuration: 1,
     modules: [
