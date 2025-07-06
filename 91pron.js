@@ -6,7 +6,6 @@ const WidgetMetadata = {
   site: "https://91porn.com",
   version: "0.0.1",
   requiredVersion: "0.5.0",
-  modules: []
 };
 function listCacheClear() {
     this.__data__ = [];
