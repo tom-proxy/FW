@@ -1,7 +1,7 @@
 {
   "title": "🅣🅞🅜",
   "description": "🔞",
-  "icon": "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
+  "icon": "https://raw.githubusercontent.com/tom-proxy/AV/refs/heads/master/QuantumultX/AV/TX.png",
   "widgets": [
     {
       "id": "jable",
@@ -9,7 +9,7 @@
       "description": "获取Jable全站视频",
       "requiredVersion": "0.0.1",
       "version": "1.0.6",
-      "author": "nibiru",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/jable.js"
     },
     {
@@ -18,7 +18,7 @@
       "description": "获取 91Porn 视频",
       "requiredVersion": "0.0.1",
       "version": "0.5.0",
-      "author": "Baran",
+      "author": "🅣🅞🅜",
       "url": "https://github.com/baranwang/forward-widget/releases/latest/download/91porn.js"
     },
     {
@@ -27,7 +27,7 @@
       "description": "在线观看Pornhub",
       "requiredVersion": "0.0.1",
       "version": "1.0.4",
-      "author": "海带",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/Madai-v/ForwardWidgets/refs/heads/main/Widgets/ph.js"
     },
     {
@@ -36,7 +36,7 @@
       "description": "获取 JAVDay 推荐",
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
-      "author": "Ti",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javday.js"
     },
     {
@@ -45,7 +45,7 @@
       "description": "获取 JAVRate 推荐",
       "requiredVersion": "0.0.1",
       "version": "2.1.0",
-      "author": "Ti",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javrate.js"
     },
     {
@@ -54,16 +54,16 @@
       "description": "获取 VOD 影视数据",
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
-      "author": "Ti",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
     },
     {
       "id": "ti.bemarkt.podcast",
-      "title": "Podcast",
+      "title": "RSS播客",
       "description": "获取 RSS 播客数据",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
-      "author": "Ti",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/podcast.js"
     },
     {
@@ -72,7 +72,7 @@
       "description": "解析直播订阅链接【五折码：CHEAP.5;七折码：CHEAP】",
       "requiredVersion": "0.0.1",
       "version": "1.0.8",
-      "author": "huangxd",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/live.js"
     },
     {
@@ -81,7 +81,7 @@
       "description": "获取热门电视直播频道",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
-      "author": "两块",
+      "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/TvLive.js"
     }
   ]
