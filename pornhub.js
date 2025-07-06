@@ -3,7 +3,7 @@ WidgetMetadata = {
     title: "Pornhub",
     version: "1.0.5",
     requiredVersion: "0.0.1",
-    description: "在线观看Pornhub",
+    description: "⚝五折码：TOM.5⚝",
     author: "🅣🅞🅜",
     site: "https://github.com/Madai-v/ForwardWidgets",
     detailCacheDuration: 1200,
