@@ -8,7 +8,7 @@ WidgetMetadata = {
     site: "@🅣🅞🅜",
     detailCacheDuration: 1200,
     modules: [
-        function listCacheClear() {
+function listCacheClear() {
     this.__data__ = [];
     this.size = 0;
 }
