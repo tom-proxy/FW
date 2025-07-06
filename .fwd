@@ -6,7 +6,7 @@
     {
       "id": "jable",
       "title": "Jable",
-      "description": "获取Jable全站视频",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.6",
       "author": "🅣🅞🅜",
@@ -15,7 +15,7 @@
     {
       "id": "91porn",
       "title": "91Porn",
-      "description": "获取 91Porn 视频",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "0.5.0",
       "author": "🅣🅞🅜",
@@ -24,7 +24,7 @@
     {
       "id": "Pornhub",
       "title": "Pornhub",
-      "description": "在线观看Pornhub",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.4",
       "author": "🅣🅞🅜",
@@ -33,7 +33,7 @@
     {
       "id": "JAVDay",
       "title": "JAVDay",
-      "description": "获取 JAVDay 推荐",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
       "author": "🅣🅞🅜",
@@ -42,7 +42,7 @@
     {
       "id": "JAVRate",
       "title": "JAVRate",
-      "description": "获取 JAVRate 推荐",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "2.1.0",
       "author": "🅣🅞🅜",
@@ -51,7 +51,7 @@
     {
       "id": "VOD",
       "title": "VOD",
-      "description": "获取 VOD 影视数据",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
       "author": "🅣🅞🅜",
@@ -60,7 +60,7 @@
     {
       "id": "movie_paradise",
       "title": "在线影院",
-      "description": "获取在线电影、电视剧、动漫、综艺和短剧",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
@@ -69,7 +69,7 @@
     {
       "id": "RSS播客",
       "title": "RSS播客",
-      "description": "获取 RSS 播客数据",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
@@ -78,7 +78,7 @@
     {
       "id": "live",
       "title": "直播(电视+网络)",
-      "description": "解析直播订阅链接【五折码：CHEAP.5;七折码：CHEAP】",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.8",
       "author": "🅣🅞🅜",
@@ -87,7 +87,7 @@
     {
       "id": "tv_live",
       "title": "电视台",
-      "description": "获取热门电视直播频道",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
