@@ -1,5 +1,5 @@
 var WidgetMetadata = {
-  id: "ti.bemarkt.vod.maccms",
+  id: "vod",
   title: "VOD",
   description: "获取 VOD 影视数据",
   author: "🅣🅞🅜",
