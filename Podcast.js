@@ -1,5 +1,5 @@
 var WidgetMetadata = {
-  id: "ti.bemarkt.podcast",
+  id: "podcast",
   title: "Podcast",
   version: "2.1.0",
   requiredVersion: "0.0.1",
