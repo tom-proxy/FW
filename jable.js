@@ -1,7 +1,7 @@
 WidgetMetadata = {
   id: "jable",
   title: "Jable",
-  description: "获取 Jable 视频",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
   version: "1.0.8",
