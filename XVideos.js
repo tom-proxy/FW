@@ -825,10 +825,11 @@ const widgetAPI = new WidgetAPI(async ()=>{
 WidgetMetadata = {
     id: 'xvideos',
     title: 'XVideos',
-    description: 'XVideos',
+    description: '⚝五折码：TOM.5⚝',
     version: "0.9.4",
     requiredVersion: '0.0.1',
-    site: 'https://github.com/baranwang/forward-widget',
+    author: "🅣🅞🅜",
+    site: '@🅣🅞🅜',
     detailCacheDuration: 1,
     modules: [
         {
