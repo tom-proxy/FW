@@ -5,7 +5,7 @@ WidgetMetadata = {
     requiredVersion: "0.0.1",
     description: "⚝五折码：TOM.5⚝",
     author: "🅣🅞🅜",
-    site: "https://github.com/Madai-v/ForwardWidgets",
+    site: "@🅣🅞🅜",
     detailCacheDuration: 1200,
     modules: [
         {
