@@ -1,7 +1,7 @@
 var WidgetMetadata = {
     id: "tv_live",
     title: "电视台",
-    description: "获取热门电视直播频道",
+    description: "⚝五折码：TOM.5⚝",
     author: "🅣🅞🅜",
     site: "@🅣🅞🅜",
     version: "1.0.1",
