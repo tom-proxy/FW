@@ -6,6 +6,25 @@ const WidgetMetadata = {
   site: "https://91porn.com",
   version: "0.0.1",
   requiredVersion: "0.5.0",
+  detailCacheDuration: 60,
+  modules: [
+    {
+      title: "最近加精",
+      description: "获取 91Porn 视频",
+      requiresWebView: false,
+      functionName: "loadVideos",  // 必须与脚本中实际存在的函数匹配
+      cacheDuration: 3600,
+      params: [
+        {
+          name: "from",
+          title: "页码",
+          type: "page",
+          description: "页码",
+          value: "1"
+        }
+      ]
+    }
+  ]
 };
 function listCacheClear() {
     this.__data__ = [];
