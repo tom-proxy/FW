@@ -1,4 +1,14 @@
-function listCacheClear() {
+WidgetMetadata = {
+    id: "91Porn",
+    title: "91Porn",
+    version: "0.0.1",
+    requiredVersion: "0.5.0",
+    description: "获取 91Porn 视频",
+    author: "🅣🅞🅜",
+    site: "@🅣🅞🅜",
+    detailCacheDuration: 1200,
+    modules: [
+        function listCacheClear() {
     this.__data__ = [];
     this.size = 0;
 }
