@@ -12,7 +12,7 @@ const WidgetMetadata = {
       title: "最近加精",
       description: "获取 91Porn 视频",
       requiresWebView: false,
-      functionName: "loadVideos",  // 必须与脚本中实际存在的函数匹配
+      functionName: "getList",  // 必须与脚本中实际存在的函数匹配
       cacheDuration: 3600,
       params: [
         {
