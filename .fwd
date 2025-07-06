@@ -10,7 +10,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.6",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/jable.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/jable.js"
     },
     {
       "id": "91porn",
@@ -28,7 +28,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.4",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/Madai-v/ForwardWidgets/refs/heads/main/Widgets/ph.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/pornhub.js"
     },
     {
       "id": "JAVDay",
@@ -37,7 +37,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javday.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/JAVDAY.js"
     },
     {
       "id": "JAVRate",
@@ -46,7 +46,7 @@
       "requiredVersion": "0.0.1",
       "version": "2.1.0",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/javrate.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/javrate.js"
     },
     {
       "id": "xvideos",
@@ -55,7 +55,7 @@
       "requiredVersion": "0.0.1",
       "version": "0.9.4",
       "author": "🅣🅞🅜",
-      "url": "https://github.com/baranwang/forward-widget/releases/latest/download/xvideos.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/XVi​does.js"
     },
     {
       "id": "VOD",
@@ -64,7 +64,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/VOD.js"
     },
     {
       "id": "movie_paradise",
@@ -73,7 +73,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/MovieParadise.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/movies.js"
     },
     {
       "id": "RSS播客",
@@ -82,7 +82,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/podcast.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/podcast.js"
     },
     {
       "id": "live",
@@ -91,7 +91,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.8",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/live.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/live.js"
     },
     {
       "id": "tv_live",
@@ -100,7 +100,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/TvLive.js"
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/TvLive.js"
     }
   ]
 }
