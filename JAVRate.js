@@ -1,5 +1,5 @@
 var WidgetMetadata = {
-  id: "ti.bemarkt.javrate",
+  id: "javrate",
   title: "JAVRate",
   description: "获取 JAVRate 推荐",
   author: "🅣🅞🅜",
