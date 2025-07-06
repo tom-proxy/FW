@@ -1,3 +1,14 @@
+const WidgetMetadata = {
+  id: "91porn",
+  title: "91Porn",
+  description: "获取 91Porn 视频资源",
+  author: "🅣🅞🅜",  // 如果您有特别署名，请告诉我
+  site: "https://91porn.com",
+  version: "0.0.1",
+  requiredVersion: "0.5.0",
+  detailCacheDuration: 60,
+  modules: []
+};
 function listCacheClear() {
     this.__data__ = [];
     this.size = 0;
