@@ -2,7 +2,7 @@ var WidgetMetadata = {
   id: "ti.bemarkt.vod.maccms",
   title: "VOD",
   description: "获取 VOD 影视数据",
-  author: "Ti",
+  author: "🅣🅞🅜",
   site: "https://github.com/bemarkt/scripts/tree/master/provider/Forward",
   version: "1.1.0",
   requiredVersion: "0.0.1",
