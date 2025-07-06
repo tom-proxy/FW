@@ -1,7 +1,7 @@
 var WidgetMetadata = {
   id: "javday",
   title: "JAVDay",
-  description: "获取 JAVDay 推荐",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "https://javday.app",
   version: "1.1.0",
