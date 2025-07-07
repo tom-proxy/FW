@@ -1,43 +1,60 @@
-const site = 'http://api.maiyoux.com:81';
-const jsonUrl = `${site}/mf/json.txt`;
+/*
+{
+  "id": "jhzhibo",
+  "title": "聚合直播",
+  "description": "聚合直播频道",
+  "requiredVersion": "0.0.1",
+  "version": "1.0.0",
+  "author": "🅣🅞🅜"
+}
+*/
+
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1';
 
-// 获取频道列表
-async function getList() {
-  const res = await $http.get({ url: jsonUrl, header: { 'User-Agent': UA } });
-  const data = res.data || {};
-  const list = [];
+const siteUrl = 'http://api.maiyoux.com:81';
+const jsonUrl = `${siteUrl}/mf/json.txt`;
 
-  if (!data.pingtai || !Array.isArray(data.pingtai)) return list;
-
-  const ignore = ['卫视直播', '龙珠', '映客'];
-
-  for (const e of data.pingtai) {
-    const name = `${e.title}(${e.Number})`;
-    if (ignore.some(v => name.includes(v))) continue;
-    list.push({
-      name,
-      ext: {
-        url: e.address
-      }
-    });
-  }
-
-  return list;
+async function getConfig() {
+  const tabs = await getTabs();
+  return jsonify({
+    tabs
+  });
 }
 
-// 获取频道内节目列表
-async function getVodList(ext) {
-  const url = `${site}/mf/${ext.url}`;
-  const res = await $http.get({ url, header: { 'User-Agent': UA } });
-  const data = res.data || {};
-  const list = [];
+async function getTabs() {
+  const ignoreList = ['卫视直播', '龙珠', '映客'];
+  const { data } = await $fetch.get(jsonUrl, {
+    headers: {
+      'User-Agent': UA
+    }
+  });
 
-  if (!data.zhubo || !Array.isArray(data.zhubo)) return { list };
+  const pingtai = argsify(data).pingtai || [];
+  const tabs = pingtai
+    .filter(e => !ignoreList.some(ignore => e.title.includes(ignore)))
+    .map(e => ({
+      name: `${e.title}(${e.Number})`,
+      ext: {
+        url: encodeURI(e.address)
+      }
+    }));
 
-  for (const e of data.zhubo) {
-    if (e.address && e.address.startsWith('rtmp')) continue;
-    list.push({
+  return tabs;
+}
+
+async function getList(ext) {
+  const { url, page = 1 } = argsify(ext);
+  const realUrl = `${siteUrl}/mf/${url}`;
+  const { data } = await $fetch.get(realUrl, {
+    headers: {
+      'User-Agent': UA
+    }
+  });
+
+  const zhubo = argsify(data).zhubo || [];
+  const list = zhubo
+    .filter(e => !e.address.startsWith('rtmp'))
+    .map(e => ({
       vod_id: e.address,
       vod_name: e.title,
       vod_pic: e.img,
@@ -45,47 +62,33 @@ async function getVodList(ext) {
       ext: {
         url: e.address
       }
-    });
-  }
+    }));
 
-  return { list };
+  return jsonify({
+    list
+  });
 }
 
-// 获取节目详情
-async function loadDetail(ext) {
-  const url = ext.url;
-  return {
-    list: [
-      {
-        title: '默认分组',
-        tracks: [
-          {
-            name: '播放',
-            ext: {
-              playurl: url
-            }
-          }
-        ]
-      }
-    ]
-  };
+async function getDetail(ext) {
+  const { url } = argsify(ext);
+  const tracks = [{
+    name: '播放',
+    ext: {
+      playurl: url
+    }
+  }];
+
+  return jsonify({
+    list: [{
+      title: '默认分组',
+      tracks
+    }]
+  });
 }
 
-// 获取播放链接
-async function getPlayInfo(ext) {
-  return {
-    urls: [ext.playurl]
-  };
+async function getPlayer(ext) {
+  const { playurl } = argsify(ext);
+  return jsonify({
+    urls: [playurl]
+  });
 }
-
-export default {
-  id: 'tv_live',
-  title: '聚合直播',
-  description: '获取热门电视直播频道',
-  version: '1.0.0',
-  author: '🅣🅞🅜',
-  getList,
-  getVodList,
-  loadDetail,
-  getPlayInfo
-};
