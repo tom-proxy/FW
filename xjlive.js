@@ -8,40 +8,25 @@ var WidgetMetadata = {
     requiredVersion: "0.0.1",
     modules: [
         {
-            title: "直播分类",
-            description: "获取直播分类列表",
-            requiresWebView: false,
-            functionName: "getCategories",
-            sectionMode: false,
-            params: []
-        },
-        {
             title: "直播平台",
             description: "获取直播平台列表",
             requiresWebView: false,
             functionName: "getPlatforms",
             sectionMode: false,
-            params: [
-                {
-                    name: "categoryId",
-                    title: "分类ID",
-                    type: "input",
-                    description: "分类ID"
-                }
-            ]
+            params: []
         },
         {
             title: "主播列表",
             description: "获取主播列表",
             requiresWebView: false,
-            functionName: "getStreamers",
+            functionName: "getAnchors",
             sectionMode: false,
             params: [
                 {
                     name: "platformUrl",
                     title: "平台地址",
                     type: "input",
-                    description: "平台地址"
+                    description: "直播平台地址"
                 }
             ]
         },
@@ -63,18 +48,8 @@ var WidgetMetadata = {
     ]
 };
 
-// 获取分类
-async function getCategories() {
-    return [{
-        id: "all",
-        type: "category",
-        title: "全部直播",
-        genreTitle: "聚合直播"
-    }];
-}
-
-// 获取平台列表
-async function getPlatforms(params = {}) {
+// 获取直播平台
+async function getPlatforms() {
     const url = "http://api.maiyoux.com:81/mf/json.txt";
     try {
         const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
@@ -82,39 +57,43 @@ async function getPlatforms(params = {}) {
 
         const results = data.map(item => ({
             id: item.address,
-            type: "platform",
+            type: "url",
             title: item.title,
             posterPath: item.xinimg,
-            genreTitle: "聚合直播",
+            genreTitle: "直播平台",
             videoUrl: item.address
         }));
 
         return results;
     } catch (err) {
-        console.error("获取平台列表失败:", err);
-        throw new Error("获取直播平台列表失败");
+        console.error("获取直播平台失败:", err);
+        throw new Error("获取直播平台失败");
     }
 }
 
 // 获取主播列表
-async function getStreamers(params = {}) {
-    const platformUrl = params.platformUrl;
-    if (!platformUrl) throw new Error("缺少平台地址参数");
+async function getAnchors(params = {}) {
+    const url = params.platformUrl;
+    if (!url) throw new Error("缺少平台地址");
+
+    const playListUrl = `http://api.maiyoux.com:81/mf/${url}`;
 
     try {
-        // 这里需要根据实际API获取主播列表
-        // 假设API返回的主播数据格式为数组，每个主播对象包含id,title,playUrl等字段
-        const resp = await Widget.http.get(platformUrl, { headers: { "User-Agent": Widget.userAgent } });
-        const streamers = resp.data || [];
-        
-        return streamers.map(streamer => ({
-            id: streamer.id,
-            type: "streamer",
-            title: streamer.title,
-            posterPath: streamer.poster,
-            genreTitle: "主播",
-            videoUrl: streamer.playUrl
+        const resp = await Widget.http.get(playListUrl, { headers: { "User-Agent": Widget.userAgent } });
+        const data = typeof resp.data === "string" ? JSON.parse(resp.data) : resp.data;
+        const anchors = data?.list || [];
+
+        if (anchors.length === 0) throw new Error("暂无主播数据");
+
+        const results = anchors.map(item => ({
+            id: item.playurl,
+            type: "url",
+            title: item.title || "主播",
+            posterPath: item.img || "",
+            videoUrl: item.playurl
         }));
+
+        return results;
     } catch (err) {
         console.error("获取主播列表失败:", err);
         throw new Error("获取主播列表失败");
