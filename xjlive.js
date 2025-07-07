@@ -9,124 +9,103 @@
 
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1';
 
-const appConfig = {
-  ver: 1,
-  title: '聚合直播',
-  site: 'http://api.maiyoux.com:81',
-};
+const site = 'http://api.maiyoux.com:81';
 
 async function getConfig() {
-  let config = appConfig;
-  config.tabs = await getTabs();
-  return jsonify(config);
+  const tabs = await getTabs();
+  return jsonify({
+    tabs
+  });
 }
 
 async function getTabs() {
-  const list = [];
-  const ignore = ['卫视直播', '龙珠', '映客'];
+  const tabs = [];
+  const ignoreList = ['卫视直播', '龙珠', '映客'];
+  const url = `${site}/mf/json.txt`;
 
-  function isIgnoreClassName(className) {
-    return ignore.some(element => className.includes(element));
-  }
-
-  const jsonurl = `${appConfig.site}/mf/json.txt`;
-  const { data } = await $fetch.get(jsonurl, {
+  const res = await http.get({
+    url: url,
     headers: {
-      'User-Agent': UA,
-    },
+      'User-Agent': UA
+    }
   });
 
-  const res = argsify(data);
-  if (!res.pingtai || !Array.isArray(res.pingtai)) return list;
+  const data = res.data || {};
+  const platforms = argsify(data).pingtai || [];
 
-  res.pingtai.forEach(e => {
-    const name = `${e.title}(${e.Number})`;
-    const href = e.address;
-    if (isIgnoreClassName(name)) return;
+  platforms.forEach(item => {
+    const name = `${item.title}(${item.Number})`;
+    if (ignoreList.some(ignore => name.includes(ignore))) return;
 
-    list.push({
-      name,
+    tabs.push({
+      name: name,
       ext: {
-        url: encodeURI(href),
-      },
+        url: encodeURIComponent(item.address)
+      }
     });
   });
 
-  return list;
+  return tabs;
 }
 
 async function getList(ext) {
   ext = argsify(ext);
-  const cards = [];
-  const jsonurl = ext.url || '';
-  const page = ext.page || 1;
-
-  if (!jsonurl) return jsonify({ list: cards });
-
-  let url = '';
-  if (page === 1) {
-    url = `${appConfig.site}/mf/${jsonurl}`;
-  }
-
-  if (!url) return jsonify({ list: cards });
-
-  const { data } = await $fetch.get(url, {
+  const url = `${site}/mf/${ext.url}`;
+  const res = await http.get({
+    url: url,
     headers: {
-      'User-Agent': UA,
-    },
+      'User-Agent': UA
+    }
   });
 
-  const res = argsify(data);
-  if (!res.zhubo || !Array.isArray(res.zhubo)) return jsonify({ list: cards });
+  const data = res.data || {};
+  const zhuboList = argsify(data).zhubo || [];
 
-  res.zhubo.forEach(e => {
-    const cover = e.img;
-    const address = e.address;
-    if (!address || address.startsWith('rtmp')) return;
-
-    cards.push({
-      vod_id: address,
-      vod_name: e.title,
-      vod_pic: cover,
+  const list = zhuboList
+    .filter(item => !item.address.startsWith('rtmp'))
+    .map(item => ({
+      vod_id: item.address,
+      vod_name: item.title,
+      vod_pic: item.img,
       vod_remarks: 'live',
       ext: {
-        url: address,
-      },
-    });
-  });
+        url: item.address
+      }
+    }));
 
-  return jsonify({ list: cards });
+  return jsonify({
+    list
+  });
 }
 
 async function loadDetail(ext) {
   ext = argsify(ext);
-  const url = ext.url || '';
-  const tracks = [];
+  const url = ext.url;
 
-  if (url) {
-    tracks.push({
+  const tracks = [
+    {
       name: '播放',
       ext: {
-        playurl: url,
-      },
-    });
-  }
+        playurl: url
+      }
+    }
+  ];
 
   return jsonify({
     list: [
       {
         title: '默认分组',
-        tracks,
-      },
-    ],
+        tracks
+      }
+    ]
   });
 }
 
 async function getPlayUrl(ext) {
   ext = argsify(ext);
-  const playurl = ext.playurl || '';
+  const playurl = ext.playurl;
 
   return jsonify({
-    urls: [playurl],
+    urls: [playurl]
   });
 }
