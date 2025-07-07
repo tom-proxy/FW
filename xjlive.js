@@ -7,38 +7,32 @@
   "author": "🅣🅞🅜"
 }
 
-const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1';
-
 const site = 'http://api.maiyoux.com:81';
+const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1';
 
 async function getConfig() {
   const tabs = await getTabs();
-  return jsonify({
-    tabs
-  });
+  return jsonify({ tabs });
 }
 
 async function getTabs() {
   const tabs = [];
   const ignoreList = ['卫视直播', '龙珠', '映客'];
-  const url = `${site}/mf/json.txt`;
-
   const res = await http.get({
-    url: url,
+    url: `${site}/mf/json.txt`,
     headers: {
       'User-Agent': UA
     }
   });
 
   const data = res.data || {};
-  const platforms = argsify(data).pingtai || [];
+  const list = argsify(data).pingtai || [];
 
-  platforms.forEach(item => {
+  list.forEach(item => {
     const name = `${item.title}(${item.Number})`;
     if (ignoreList.some(ignore => name.includes(ignore))) return;
-
     tabs.push({
-      name: name,
+      name,
       ext: {
         url: encodeURIComponent(item.address)
       }
@@ -50,52 +44,44 @@ async function getTabs() {
 
 async function getList(ext) {
   ext = argsify(ext);
-  const url = `${site}/mf/${ext.url}`;
+  const address = decodeURIComponent(ext.url || '');
   const res = await http.get({
-    url: url,
+    url: `${site}/mf/${address}`,
     headers: {
       'User-Agent': UA
     }
   });
 
   const data = res.data || {};
-  const zhuboList = argsify(data).zhubo || [];
+  const list = argsify(data).zhubo || [];
 
-  const list = zhuboList
-    .filter(item => !item.address.startsWith('rtmp'))
+  const videos = list
+    .filter(item => item.address && !item.address.startsWith('rtmp'))
     .map(item => ({
       vod_id: item.address,
       vod_name: item.title,
       vod_pic: item.img,
       vod_remarks: 'live',
-      ext: {
-        url: item.address
-      }
+      ext: { url: item.address }
     }));
 
-  return jsonify({
-    list
-  });
+  return jsonify({ list: videos });
 }
 
 async function loadDetail(ext) {
   ext = argsify(ext);
-  const url = ext.url;
-
-  const tracks = [
-    {
-      name: '播放',
-      ext: {
-        playurl: url
-      }
-    }
-  ];
+  const url = ext.url || '';
 
   return jsonify({
     list: [
       {
         title: '默认分组',
-        tracks
+        tracks: [
+          {
+            name: '播放',
+            ext: { playurl: url }
+          }
+        ]
       }
     ]
   });
@@ -103,9 +89,6 @@ async function loadDetail(ext) {
 
 async function getPlayUrl(ext) {
   ext = argsify(ext);
-  const playurl = ext.playurl;
-
-  return jsonify({
-    urls: [playurl]
-  });
+  const playurl = ext.playurl || '';
+  return jsonify({ urls: [playurl] });
 }
