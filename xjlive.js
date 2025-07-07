@@ -28,9 +28,9 @@ async function getTabs() {
   });
 
   const data = res.data || {};
-  const platforms = argsify(data).pingtai || [];
+  const pingtai = argsify(data).pingtai || [];
 
-  platforms.forEach(item => {
+  pingtai.forEach(item => {
     const name = `${item.title}(${item.Number})`;
     if (ignoreList.some(ignore => name.includes(ignore))) return;
     tabs.push({
