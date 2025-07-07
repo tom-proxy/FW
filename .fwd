@@ -85,9 +85,9 @@
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/Podcast.js"
     },
     {
-      "id": "jhzhibo",
+      "id": "juhe_live",
       "title": "聚合直播",
-      "description": "聚合直播频道",
+      "description": "聚合多个直播源",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
