@@ -6,7 +6,6 @@ var WidgetMetadata = {
     site: "http://api.hclyz.com:81",
     version: "1.0.1",
     requiredVersion: "0.0.1",
-    icon: "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
     modules: [
         {
             title: "直播平台",
