@@ -86,8 +86,8 @@
     },
     {
       "id": "juhe_live",
-      "title": "聚合直播",
-      "description": "聚合多个直播源",
+      "title": "直播平台与主播",
+      "description: "展示平台及其主播，支持播放与 M3U 导出",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
