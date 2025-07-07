@@ -1,11 +1,11 @@
 var WidgetMetadata = {
-      "id": "juhe_live",
-      "title": "聚合直播",
-      "description": "聚合多个直播源",
-      "requiredVersion": "1.0.1",
-      "version": "0.0.1",
-      "author": "🅣🅞🅜",
-      modules: [
+    id: "juhe_live",
+    title: "聚合直播",
+    description: "聚合多个直播源",
+    requiredVersion: "1.0.1",
+    version: "0.0.1",
+    author: "🅣🅞🅜",
+    modules: [
         {
             title: "直播平台",
             description: "获取直播平台列表",
@@ -52,13 +52,40 @@ async function getCategories() {
     const url = "http://api.hclyz.com:81/mf/json.txt";
     try {
         const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
-        const data = resp.data || [];
+        const text = resp.data;
+
+        // 如果返回的是JSON格式
+        let data = [];
+        if (typeof text === "string") {
+            const items = text.split('|').filter(i => i.trim());
+            let temp = {};
+            items.forEach(str => {
+                const match = str.match(/^@([a-zA-Z0-9]+)(.*)/);
+                if (match) {
+                    const key = match[1];
+                    const value = match[2];
+                    if (key === 'mc') {
+                        if (Object.keys(temp).length > 0) data.push(temp);
+                        temp = { mc: value };
+                    } else if (key === 'tp1') {
+                        temp.tp1 = value;
+                    } else if (key === 'dz') {
+                        temp.dz = value;
+                    } else if (key === 'sl') {
+                        temp.sl = value;
+                    }
+                }
+            });
+            if (Object.keys(temp).length > 0) data.push(temp);
+        } else if (Array.isArray(resp.data)) {
+            data = resp.data;
+        }
 
         const results = data.map(item => ({
-            id: item.dz, // 地址
+            id: item.dz,
             type: "url",
-            title: item.mc, // 名称
-            posterPath: item.tp1, // 图片
+            title: item.mc,
+            posterPath: item.tp1,
             genreTitle: `主播数：${item.sl}`,
             videoUrl: item.dz
         }));
