@@ -1,17 +1,17 @@
 var WidgetMetadata = {
     id: "juhe_live",
     title: "聚合直播",
-    description: "聚合多个直播源",
+    description: "聚合多个直播源，支持平台与主播二级菜单",
     author: "🅣🅞🅜",
     site: "http://api.maiyoux.com:81",
-    version: "1.0.0",
+    version: "1.0.1",
     requiredVersion: "0.0.1",
     modules: [
         {
             title: "选择直播平台",
-            description: "选择平台并查看主播",
+            description: "支持平台与主播二级菜单",
             requiresWebView: false,
-            functionName: "getLiveList",
+            functionName: "getLivePlatforms",
             sectionMode: false,
             params: []
         }
@@ -19,35 +19,39 @@ var WidgetMetadata = {
 };
 
 // 获取直播平台和主播
-async function getLiveList() {
+async function getLivePlatforms() {
     const url = "http://api.maiyoux.com:81/mf/json.txt";
     try {
         const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
-        const data = resp.data?.pingtai || [];
+        const platforms = resp.data?.pingtai || [];
 
         const results = [];
 
-        for (const platform of data) {
+        for (const platform of platforms) {
             const platformTitle = platform.title || "未知平台";
             const platformImg = platform.xinimg || "";
-            const platformAddress = platform.address || "";
+            const platformKey = platform.address || "";
 
-            // 请求每个平台的主播列表
-            const platformUrl = `http://api.maiyoux.com:81/mf/${platformAddress}`;
-            const platformResp = await Widget.http.get(platformUrl, { headers: { "User-Agent": Widget.userAgent } });
+            const platformUrl = `http://api.maiyoux.com:81/mf/${platformKey}`;
 
-            const anchors = platformResp.data || [];
+            let anchors = [];
+            try {
+                const anchorResp = await Widget.http.get(platformUrl, { headers: { "User-Agent": Widget.userAgent } });
+                anchors = Array.isArray(anchorResp.data) ? anchorResp.data : [];
+            } catch (anchorErr) {
+                console.error(`加载主播失败: ${platformTitle}`, anchorErr);
+            }
 
             const childItems = anchors.map(anchor => ({
                 id: anchor.address,
                 type: "url",
-                title: anchor.title,
+                title: anchor.title || "主播",
                 posterPath: anchor.xinimg || platformImg,
                 videoUrl: anchor.address
             }));
 
             results.push({
-                id: platformAddress,
+                id: platformKey,
                 type: "url",
                 title: platformTitle,
                 posterPath: platformImg,
@@ -57,8 +61,9 @@ async function getLiveList() {
         }
 
         return results;
+
     } catch (err) {
-        console.error("获取直播平台失败:", err);
+        console.error("获取平台失败:", err);
         throw new Error("加载直播平台失败");
     }
 }
