@@ -1,9 +1,9 @@
 {
-  "id": "聚合直播",
+  "id": "tv_live",
   "title": "聚合直播",
-  "description": "获取频道列表",
+  "description": "获取热门电视直播频道",
   "requiredVersion": "0.0.1",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "🅣🅞🅜"
 }
 
@@ -12,14 +12,12 @@ const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit
 
 async function getConfig() {
   const tabs = await getTabs();
-  return jsonify({
-    tabs: tabs
-  });
+  return jsonify({ tabs });
 }
 
 async function getTabs() {
   const tabs = [];
-  const ignore = ['卫视直播', '龙珠', '映客'];
+  const ignoreList = ['卫视直播', '龙珠', '映客'];
   const url = `${site}/mf/json.txt`;
 
   const res = await http.get({
@@ -30,15 +28,15 @@ async function getTabs() {
   });
 
   const data = res.data || {};
-  const pingtai = argsify(data).pingtai || [];
+  const platforms = argsify(data).pingtai || [];
 
-  pingtai.forEach(e => {
-    const name = `${e.title}(${e.Number})`;
-    if (ignore.some(i => name.includes(i))) return;
+  platforms.forEach(item => {
+    const name = `${item.title}(${item.Number})`;
+    if (ignoreList.some(ignore => name.includes(ignore))) return;
     tabs.push({
       name: name,
       ext: {
-        url: encodeURIComponent(e.address)
+        url: encodeURIComponent(item.address)
       }
     });
   });
@@ -62,20 +60,18 @@ async function getList(ext) {
   const zhubo = argsify(data).zhubo || [];
 
   const list = zhubo
-    .filter(e => e.address && !e.address.startsWith('rtmp'))
-    .map(e => ({
-      vod_id: e.address,
-      vod_name: e.title,
-      vod_pic: e.img,
+    .filter(item => item.address && !item.address.startsWith('rtmp'))
+    .map(item => ({
+      vod_id: item.address,
+      vod_name: item.title,
+      vod_pic: item.img,
       vod_remarks: 'live',
       ext: {
-        url: e.address
+        url: item.address
       }
     }));
 
-  return jsonify({
-    list: list
-  });
+  return jsonify({ list });
 }
 
 async function loadDetail(ext) {
