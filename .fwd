@@ -85,15 +85,6 @@
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/Podcast.js"
     },
     {
-      "id": "聚合直播",
-      "title": "直播平台与主播",
-      "description: "⚝五折码：TOM.5⚝",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.0",
-      "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/xjlive.js"
-    },
-    {
       "id": "live",
       "title": "直播(电视+网络)",
       "description": "⚝五折码：TOM.5⚝",
