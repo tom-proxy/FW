@@ -1,14 +1,14 @@
 var WidgetMetadata = {
     id: "juhe_live",
     title: "聚合直播",
-    description: "聚合多个直播源",
+    description: "聚合多个直播源（技术交流免费接口）",
     requiredVersion: "1.0.1",
-    version: "0.0.1",
+    version: "1.0.3",
     author: "🅣🅞🅜",
     modules: [
         {
             title: "直播平台",
-            description: "获取直播平台列表",
+            description: "选择直播平台",
             requiresWebView: false,
             functionName: "getCategories",
             sectionMode: false,
@@ -16,32 +16,22 @@ var WidgetMetadata = {
         },
         {
             title: "主播列表",
-            description: "获取平台主播列表",
+            description: "选择主播播放",
             requiresWebView: false,
             functionName: "getChannels",
             sectionMode: false,
             params: [
-                {
-                    name: "url",
-                    title: "地址",
-                    type: "input",
-                    description: "频道地址"
-                }
+                { name: "url", title: "平台地址", type: "input", description: "前级传入dz" }
             ]
         },
         {
             title: "播放地址",
-            description: "获取播放地址",
+            description: "获取播放链接",
             requiresWebView: false,
             functionName: "getPlayUrl",
             sectionMode: false,
             params: [
-                {
-                    name: "playurl",
-                    title: "播放链接",
-                    type: "input",
-                    description: "播放链接"
-                }
+                { name: "playurl", title: "主播链接", type: "input", description: "前级传入主播url" }
             ]
         }
     ]
@@ -50,76 +40,49 @@ var WidgetMetadata = {
 // 获取直播平台列表
 async function getCategories() {
     const url = "http://api.hclyz.com:81/mf/json.txt";
-    try {
-        const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
-        const text = resp.data;
+    const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
+    const text = typeof resp.data === "string" ? resp.data : JSON.stringify(resp.data);
 
-        // 如果返回的是JSON格式
-        let data = [];
-        if (typeof text === "string") {
-            const items = text.split('|').filter(i => i.trim());
-            let temp = {};
-            items.forEach(str => {
-                const match = str.match(/^@([a-zA-Z0-9]+)(.*)/);
-                if (match) {
-                    const key = match[1];
-                    const value = match[2];
-                    if (key === 'mc') {
-                        if (Object.keys(temp).length > 0) data.push(temp);
-                        temp = { mc: value };
-                    } else if (key === 'tp1') {
-                        temp.tp1 = value;
-                    } else if (key === 'dz') {
-                        temp.dz = value;
-                    } else if (key === 'sl') {
-                        temp.sl = value;
-                    }
-                }
-            });
-            if (Object.keys(temp).length > 0) data.push(temp);
-        } else if (Array.isArray(resp.data)) {
-            data = resp.data;
-        }
+    const items = text.split('|').filter(line => line.startsWith('@mc'));
+    const data = items.map(line => {
+        const obj = {};
+        ["mc", "tp1", "dz", "sl"].forEach(key => {
+            const m = text.match(new RegExp(`@${key}([^@|]+)`));
+            if (m) obj[key] = m[1];
+        });
+        return obj;
+    });
 
-        const results = data.map(item => ({
-            id: item.dz,
-            type: "url",
-            title: item.mc,
-            posterPath: item.tp1,
-            genreTitle: `主播数：${item.sl}`,
-            videoUrl: item.dz
-        }));
-
-        return results;
-    } catch (err) {
-        console.error("获取平台失败:", err);
-        throw new Error("获取直播平台失败");
-    }
+    return data.map(item => ({
+        id: item.dz,
+        type: "input",
+        title: item.mc,
+        posterPath: item.tp1,
+        genreTitle: `主播≈${item.sl}`,
+        videoUrl: item.dz
+    }));
 }
 
-// 获取主播列表
+// 获取该平台主播列表
 async function getChannels(params = {}) {
-    const url = params.url;
-    if (!url) throw new Error("缺少地址参数");
-
-    const playUrl = `http://api.hclyz.com:81/mf/${url}`;
-    return [{
-        id: playUrl,
+    const dz = params.url;
+    if (!dz) throw new Error("缺少平台dz参数");
+    const url = `http://api.hclyz.com:81/mf/${dz}`;
+    const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
+    const list = resp.data?.list || [];
+    return list.map(bj => ({
+        id: bj.url,
         type: "url",
-        title: "进入直播",
-        videoUrl: playUrl
-    }];
+        title: bj.name,
+        posterPath: bj.img,
+        genreTitle: bj.desc || "",
+        videoUrl: bj.url
+    }));
 }
 
-// 获取播放地址
+// 获取主播播放地址
 async function getPlayUrl(params = {}) {
     const playurl = params.playurl;
-    if (!playurl) throw new Error("缺少播放链接");
-
-    return [{
-        id: playurl,
-        type: "url",
-        title: "立即播放",
-        videoUrl: playurl
-    }];
+    if (!playurl) throw new Error("缺少主播链接");
+    return [{ id: playurl, type: "url", title: "立即播放", videoUrl: playurl }];
 }
