@@ -1,83 +1,99 @@
-/*
-{
-  "id": "jhzhibo",
-  "title": "聚合直播",
-  "description": "聚合直播频道",
-  "requiredVersion": "0.0.1",
-  "version": "1.0.0",
-  "author": "🅣🅞🅜"
-}
-*/
+var WidgetMetadata = {
+    id: "juhe_live",
+    title: "聚合直播",
+    description: "聚合多个直播源",
+    author: "🅣🅞🅜",
+    site: "http://api.maiyoux.com:81",
+    version: "1.0.0",
+    requiredVersion: "0.0.1",
+    modules: [
+        {
+            title: "直播分类",
+            description: "获取直播分类列表",
+            requiresWebView: false,
+            functionName: "getCategories",
+            sectionMode: false,
+            params: []
+        },
+        {
+            title: "直播频道",
+            description: "获取直播频道列表",
+            requiresWebView: false,
+            functionName: "getChannels",
+            sectionMode: false,
+            params: [
+                {
+                    name: "url",
+                    title: "地址",
+                    type: "input",
+                    description: "频道地址"
+                }
+            ]
+        },
+        {
+            title: "播放地址",
+            description: "获取播放地址",
+            requiresWebView: false,
+            functionName: "getPlayUrl",
+            sectionMode: false,
+            params: [
+                {
+                    name: "playurl",
+                    title: "播放链接",
+                    type: "input",
+                    description: "播放链接"
+                }
+            ]
+        }
+    ]
+};
 
-const siteUrl = 'http://api.maiyoux.com:81';
-const jsonUrl = `${siteUrl}/mf/json.txt`;
-const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1';
+// 获取分类
+async function getCategories() {
+    const url = "http://api.maiyoux.com:81/mf/json.txt";
+    try {
+        const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
+        const data = resp.data?.pingtai || [];
 
-// 配置菜单
-async function getConfig() {
-  const tabs = await getTabs();
-  return {
-    tabs: tabs.length ? tabs : [{ name: '默认', ext: { url: 'jsonweishizhibo.txt' } }]
-  };
+        const results = data.map(item => ({
+            id: item.address,
+            type: "url",
+            title: item.title,
+            posterPath: item.xinimg,
+            genreTitle: "聚合直播",
+            videoUrl: item.address
+        }));
+
+        return results;
+    } catch (err) {
+        console.error("获取分类失败:", err);
+        throw new Error("获取直播分类失败");
+    }
 }
 
 // 获取频道
-async function getTabs() {
-  const res = await $fetch.get(jsonUrl, { headers: { 'User-Agent': UA } });
-  const data = res?.data?.pingtai || [];
+async function getChannels(params = {}) {
+    const url = params.url;
+    if (!url) throw new Error("缺少地址参数");
 
-  const ignore = ['卫视直播', '龙珠', '映客'];
-
-  const tabs = data
-    .filter(item => !ignore.some(str => item.title.includes(str)))
-    .map(item => ({
-      name: `${item.title}(${item.Number})`,
-      ext: { url: item.address }
-    }));
-
-  return tabs;
+    const playUrl = `http://api.maiyoux.com:81/mf/${url}`;
+    return [{
+        id: playUrl,
+        type: "url",
+        title: "进入直播",
+        videoUrl: playUrl
+    }];
 }
 
-// 获取列表
-async function getList(ext) {
-  const { url } = argsify(ext);
-  const api = `${siteUrl}/mf/${url}`;
-  const res = await $fetch.get(api, { headers: { 'User-Agent': UA } });
-  const zhubo = res?.data?.zhubo || [];
+// 获取播放地址
+async function getPlayUrl(params = {}) {
+    const playurl = params.playurl;
+    if (!playurl) throw new Error("缺少播放链接");
 
-  const list = zhubo
-    .filter(i => i.address && !i.address.startsWith('rtmp'))
-    .map(i => ({
-      vod_id: i.address,
-      vod_name: i.title,
-      vod_pic: i.img,
-      vod_remarks: 'live',
-      ext: { url: i.address }
-    }));
-
-  return { list: list.length ? list : [] };
-}
-
-// 获取详情
-async function getDetail(ext) {
-  const { url } = argsify(ext);
-  return {
-    list: [{
-      title: '播放源',
-      tracks: [
-        {
-          name: '播放',
-          ext: { playurl: url }
-        }
-      ]
-    }]
-  };
-}
-
-// 播放接口
-async function getPlayer(ext) {
-  const { playurl } = argsify(ext);
-  return {
-    urls: [playurl]
-  };
+    return [{
+        id: playurl,
+        type: "url",
+        title: "立即播放",
+        videoUrl: playurl
+    }];
 }
