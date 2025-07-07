@@ -4,7 +4,7 @@ var WidgetMetadata = {
     description: "聚合多个直播源，支持平台与主播二级菜单\n备用域名获取地址：https://www.ebay.com/usr/xiar2792",
     author: "🅣🅞🅜",
     site: "http://api.maiyoux.com:81",
-    version: "1.0.3",
+    version: "1.0.4",
     requiredVersion: "0.0.1",
     modules: [
         {
@@ -23,10 +23,10 @@ var WidgetMetadata = {
             sectionMode: false,
             params: [
                 {
-                    name: "platformUrl",
-                    title: "平台地址",
+                    name: "platformJson",
+                    title: "平台 JSON 地址",
                     type: "input",
-                    description: "平台 JSON 地址"
+                    description: "如：XXX.json"
                 }
             ]
         }
@@ -36,56 +36,47 @@ var WidgetMetadata = {
 const MAIN_DOMAIN = "http://api.maiyoux.com:81";
 const BACKUP_INFO = "备用域名获取：https://www.ebay.com/usr/xiar2792";
 
-// 一级菜单：平台列表
+// 一级：平台列表
 async function getLivePlatforms() {
     const apiUrl = `${MAIN_DOMAIN}/mf/json.txt`;
     try {
         const resp = await Widget.http.get(apiUrl, { headers: { "User-Agent": Widget.userAgent } });
         const platforms = resp.data?.pingtai || [];
 
-        if (!Array.isArray(platforms) || platforms.length === 0) {
-            throw new Error("未获取到直播平台");
-        }
-
         const results = platforms.map(platform => {
-            const address = platform.address || "";
+            const platformJson = platform.address || "";
             const title = platform.title || "未知平台";
             const img = platform.xinimg || "";
 
-            const platformJsonUrl = `${MAIN_DOMAIN}/mf/${address}`;
-
             return {
-                id: platformJsonUrl,
+                id: platformJson,
                 type: "url",
                 title: title,
                 posterPath: img,
                 genreTitle: "直播平台",
-                link: `forward://run?module=juhe_live&functionName=getAnchors&platformUrl=${encodeURIComponent(address)}`
+                link: `forward://run?module=juhe_live&functionName=getAnchors&platformJson=${encodeURIComponent(platformJson)}`
             };
         });
 
         return results;
-
     } catch (err) {
         console.error("获取平台失败:", err);
         throw new Error(`加载失败，请访问备用域名获取最新地址：${BACKUP_INFO}`);
     }
 }
 
-// 二级菜单：主播列表
+// 二级：主播列表
 async function getAnchors(params = {}) {
-    const platformUrl = params.platformUrl;
-    if (!platformUrl) throw new Error("缺少平台地址");
+    const platformJson = params.platformJson;
+    if (!platformJson) throw new Error("缺少平台地址");
 
-    const fullUrl = `${MAIN_DOMAIN}/mf/${platformUrl}`;
+    const fullUrl = `${MAIN_DOMAIN}/mf/${platformJson}`;
 
     try {
         const resp = await Widget.http.get(fullUrl, { headers: { "User-Agent": Widget.userAgent } });
         const anchors = Array.isArray(resp.data) ? resp.data : [];
 
-        if (anchors.length === 0) {
-            throw new Error("该平台暂无主播或数据丢失");
-        }
+        if (anchors.length === 0) throw new Error("暂无主播");
 
         const results = anchors.map(anchor => ({
             id: anchor.address || "",
@@ -96,9 +87,8 @@ async function getAnchors(params = {}) {
         }));
 
         return results;
-
     } catch (err) {
-        console.error("获取主播失败:", err);
+        console.error("主播加载失败:", err);
         throw new Error("加载主播失败，请稍后重试");
     }
 }
