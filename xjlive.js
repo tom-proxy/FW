@@ -1,94 +1,71 @@
 var WidgetMetadata = {
-    id: "juhe_live",
-    title: "聚合直播",
-    description: "聚合多个直播源，支持平台与主播二级菜单\n备用域名获取地址：https://www.ebay.com/usr/xiar2792",
+    id: ＂juhe_live",
+    title: "直播平台与主播",
+    description: "展示平台及其主播，支持播放与 M3U 导出",
     author: "🅣🅞🅜",
     site: "http://api.maiyoux.com:81",
-    version: "1.0.4",
+    version: "1.0.0",
     requiredVersion: "0.0.1",
     modules: [
         {
-            title: "选择直播平台",
-            description: "点击平台进入主播列表",
+            title: "直播平台分类",
+            description: "列出所有平台及其主播",
             requiresWebView: false,
-            functionName: "getLivePlatforms",
+            functionName: "loadPlatformsAndStreams",
             sectionMode: false,
             params: []
-        },
-        {
-            title: "主播列表",
-            description: "显示主播列表",
-            requiresWebView: false,
-            functionName: "getAnchors",
-            sectionMode: false,
-            params: [
-                {
-                    name: "platformJson",
-                    title: "平台 JSON 地址",
-                    type: "input",
-                    description: "如：XXX.json"
-                }
-            ]
         }
     ]
 };
 
-const MAIN_DOMAIN = "http://api.maiyoux.com:81";
-const BACKUP_INFO = "备用域名获取：https://www.ebay.com/usr/xiar2792";
-
-// 一级：平台列表
-async function getLivePlatforms() {
-    const apiUrl = `${MAIN_DOMAIN}/mf/json.txt`;
+async function loadPlatformsAndStreams(params = {}) {
     try {
-        const resp = await Widget.http.get(apiUrl, { headers: { "User-Agent": Widget.userAgent } });
-        const platforms = resp.data?.pingtai || [];
+        const base = $cache.get("info")?.turl
+            ? $text.base64Decode($cache.get("info").turl)
+            : null;
+        if (!base) {
+            throw new Error("缺少配置信息，请先加载 info");
+        }
 
-        const results = platforms.map(platform => {
-            const platformJson = platform.address || "";
-            const title = platform.title || "未知平台";
-            const img = platform.xinimg || "";
+        const resp = await Widget.http.get(base + "json.txt", {
+            headers: {
+                "User-Agent": "Mozilla/5.0"
+            }
+        });
+        const platforms = resp.data.pingtai;
+        if (!Array.isArray(platforms)) {
+            throw new Error("平台数据格式错误");
+        }
+
+        // 一级平台列表
+        return await Promise.all(platforms.map(async (plt, idx) => {
+            // 请求平台下主播数据
+            const listResp = await Widget.http.get(base + plt.address, {
+                headers: { "User-Agent": "Mozilla/5.0" }
+            });
+            const rooms = Array.isArray(listResp.data.zhubo) ? listResp.data.zhubo : [];
+
+            const childItems = rooms.map((r, ridx) => ({
+                id: r.address,
+                type: "url",
+                title: r.title,
+                posterPath: r.img,
+                videoUrl: r.address,
+                mediaType: "tv",
+                description: r.title
+            }));
 
             return {
-                id: platformJson,
-                type: "url",
-                title: title,
-                posterPath: img,
-                genreTitle: "直播平台",
-                link: `forward://run?module=juhe_live&functionName=getAnchors&platformJson=${encodeURIComponent(platformJson)}`
+                id: `plat_${idx}`,
+                type: "category",
+                title: `${plt.title} (${plt.Number})`,
+                posterPath: plt.xinimg,
+                description: plt.title,
+                childItems
             };
-        });
-
-        return results;
-    } catch (err) {
-        console.error("获取平台失败:", err);
-        throw new Error(`加载失败，请访问备用域名获取最新地址：${BACKUP_INFO}`);
-    }
-}
-
-// 二级：主播列表
-async function getAnchors(params = {}) {
-    const platformJson = params.platformJson;
-    if (!platformJson) throw new Error("缺少平台地址");
-
-    const fullUrl = `${MAIN_DOMAIN}/mf/${platformJson}`;
-
-    try {
-        const resp = await Widget.http.get(fullUrl, { headers: { "User-Agent": Widget.userAgent } });
-        const anchors = Array.isArray(resp.data) ? resp.data : [];
-
-        if (anchors.length === 0) throw new Error("暂无主播");
-
-        const results = anchors.map(anchor => ({
-            id: anchor.address || "",
-            type: "url",
-            title: anchor.title || "主播",
-            posterPath: anchor.xinimg || "",
-            videoUrl: anchor.address || ""
         }));
-
-        return results;
-    } catch (err) {
-        console.error("主播加载失败:", err);
-        throw new Error("加载主播失败，请稍后重试");
+    } catch (e) {
+        console.error(e);
+        throw e;
     }
 }
