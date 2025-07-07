@@ -1,12 +1,11 @@
 var WidgetMetadata = {
-    id: "juhe_live",
-    title: "聚合直播",
-    description: "聚合多个直播源",
-    author: "🅣🅞🅜",
-    site: "http://api.hclyz.com:81",
-    version: "1.0.1",
-    requiredVersion: "0.0.1",
-    modules: [
+      "id": "juhe_live",
+      "title": "聚合直播",
+      "description": "聚合多个直播源",
+      "requiredVersion": "1.0.1",
+      "version": "0.0.1",
+      "author": "🅣🅞🅜",
+      modules: [
         {
             title: "直播平台",
             description: "获取直播平台列表",
