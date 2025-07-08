@@ -1,92 +1,107 @@
 var WidgetMetadata = {
-    "id": "juhe_live",
-    "title": "聚合直播",
-    "description": "聚合多个直播源",
-    "requiredVersion": "1.0.1",
-    "version": "1.0.0",
-    "author": "🅣🅞🅜",
-    "modules": [
-        {
-            "title": "直播平台",
-            "description": "选择直播平台",
-            "requiresWebView": false,
-            "functionName": "getCategories",
-            "params": []
-        },
-        {
-            "title": "主播列表",
-            "description": "选择主播",
-            "requiresWebView": false,
-            "functionName": "getChannels",
-            "params": [
-                {
-                    "name": "url",
-                    "title": "平台地址",
-                    "type": "input",
-                    "description": "自动传参无需手动输入"
-                }
-            ]
-        },
-        {
-            "title": "播放",
-            "description": "直接播放",
-            "requiresWebView": false,
-            "functionName": "getPlayUrl",
-            "params": [
-                {
-                    "name": "playurl",
-                    "title": "播放地址",
-                    "type": "input",
-                    "description": "自动传参无需手动输入"
-                }
-            ]
-        }
-    ]
+  id: "qiumingshan_live",
+  title: "直播 - 秋名山见",
+  description: "聚合多个直播平台，支持主播列表与直接播放",
+  author: "小良科技",
+  version: "2.2",
+  icon: "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
+  modules: [
+    {
+      title: "聚合直播",
+      description: "选择直播平台 → 主播列表 → 直接播放",
+      functionName: "loadPlatforms",
+      cacheDuration: 600,
+      params: []
+    }
+  ]
 };
 
-// 获取平台列表
-async function getCategories() {
-    const url = "http://api.hclyz.com:81/mf/json.txt";
-    const resp = await Widget.http.get(url, { headers: { "User-Agent": Widget.userAgent } });
-    const data = resp.data || [];
+// 一级：获取平台
+async function loadPlatforms() {
+  const infoUrl = "https://iphone8.vip/conf.json";
+  let response;
+  try {
+    response = await Widget.http.get({ url: infoUrl });
+  } catch (e) {
+    console.log("获取配置信息失败", e);
+    return [];
+  }
 
-    return data.map(item => ({
-        id: item.dz,
-        type: "url",
-        title: item.mc,
-        posterPath: item.tp1,
-        genreTitle: `主播数：${item.sl}`,
-        videoUrl: item.dz
-    }));
+  const info = response.data;
+  if (!info || !info.turl) return [];
+
+  const platformsUrl = decodeBase64(info.turl) + "json.txt";
+
+  let platResponse;
+  try {
+    platResponse = await Widget.http.get({
+      url: platformsUrl,
+      header: {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2; OPPO R11 Build/NMF26X)"
+      }
+    });
+  } catch (e) {
+    console.log("获取平台失败", e);
+    return [];
+  }
+
+  const platforms = platResponse.data?.pingtai || [];
+  return platforms.map(item => ({
+    id: item.address,
+    type: "list",
+    title: `${item.title} (${item.Number})`,
+    posterPath: item.xinimg,
+    onClick: async () => await loadStreamers(item.address, item.title)
+  }));
 }
 
-// 获取主播列表
-async function getChannels(params = {}) {
-    const url = params.url;
-    if (!url) throw new Error("缺少平台地址");
+// 二级：获取主播
+async function loadStreamers(platformId, platformName) {
+  const infoUrl = "https://iphone8.vip/conf.json";
+  let response;
+  try {
+    response = await Widget.http.get({ url: infoUrl });
+  } catch (e) {
+    console.log("获取配置信息失败", e);
+    return [];
+  }
 
-    const apiUrl = `http://api.hclyz.com:81/mf/${url}`;
-    const resp = await Widget.http.get(apiUrl, { headers: { "User-Agent": Widget.userAgent } });
-    const data = resp.data.list || [];
+  const info = response.data;
+  const streamerUrl = decodeBase64(info.turl) + platformId;
 
-    return data.map(item => ({
-        id: item.url,
-        type: "url",
-        title: item.name,
-        posterPath: item.img,
-        videoUrl: item.url
-    }));
+  let streamResponse;
+  try {
+    streamResponse = await Widget.http.get({
+      url: streamerUrl,
+      header: {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2; OPPO R11 Build/NMF26X)"
+      }
+    });
+  } catch (e) {
+    console.log("获取主播列表失败", e);
+    return [];
+  }
+
+  const zhuboList = streamResponse.data?.zhubo || [];
+
+  return [{
+    title: `${platformName} 主播列表`,
+    items: zhuboList.map(item => ({
+      id: item.address,
+      type: "video",
+      title: item.title,
+      posterPath: item.img,
+      videoUrl: item.address // 🚩 直接给 Forward 播放，无需任何前缀
+    }))
+  }];
 }
 
-// 播放地址
-async function getPlayUrl(params = {}) {
-    const playurl = params.playurl;
-    if (!playurl) throw new Error("缺少播放地址");
-
-    return [{
-        id: playurl,
-        type: "url",
-        title: "立即播放",
-        videoUrl: playurl
-    }];
+// 工具：Base64解码
+function decodeBase64(str) {
+  try {
+    return Widget.text.base64Decode(str.replace(/lz7z/g, "a"));
+  } catch (e) {
+    console.log("Base64解码失败", e);
+    return "";
+  }
 }
