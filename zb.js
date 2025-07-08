@@ -8,7 +8,7 @@ var WidgetMetadata = {
   requiredVersion: "0.0.1",
   modules: [
     {
-      title: "直播",
+      title: "碧池直播",
       requiresWebView: false,
       functionName: "getVideos",
       params: [
