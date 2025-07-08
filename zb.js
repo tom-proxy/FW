@@ -14,7 +14,7 @@ var WidgetMetadata = {
       params: [
         {
           name: "category",
-          title: "类型",
+          title: "平台",
           type: "enumeration",
           enumOptions: [
             { title: "卡哇伊", value: "jsonkawayi" },
