@@ -1,7 +1,7 @@
 var WidgetMetadata = {
   id: "Bitch",
   title: "碧池直播",
-  description: "⚝五折码：TOM.5⚝",
+  description: "直播",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
   version: "1.0.0",
