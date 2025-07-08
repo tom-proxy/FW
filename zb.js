@@ -1,7 +1,7 @@
 var WidgetMetadata = {
   id: "碧池直播",
-  title: "秋名山直播",
-  description: "直播",
+  title: "碧池直播",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "http://api.maiyoux.com:81",
   version: "1.0.0",
