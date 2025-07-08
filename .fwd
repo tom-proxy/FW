@@ -102,14 +102,5 @@
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/TVlive.js"
     }
-    {
-      "id": "juhe_live",
-      "title": "聚合直播",
-      "description": "forward",
-      "requiredVersion": "1.0.1",
-      "version": "1.0.0",
-      "author": "小良科技",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/zb.js",
-    }
   ]
 }
