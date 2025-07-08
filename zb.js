@@ -1,14 +1,14 @@
 var WidgetMetadata = {
-  id: "qiumingshan_live",
-  title: "直播 - 秋名山见",
-  description: "聚合多个直播平台，支持主播列表与直接播放",
+  id: "juhe_live",
+  title: "聚合直播",
+  description: "Forward",
   author: "小良科技",
-  version: "2.2",
+  version: "1.0.0",
   icon: "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
   modules: [
     {
       title: "聚合直播",
-      description: "选择直播平台 → 主播列表 → 直接播放",
+      description: "支持多平台聚合直播观看",
       functionName: "loadPlatforms",
       cacheDuration: 600,
       params: []
@@ -16,92 +16,68 @@ var WidgetMetadata = {
   ]
 };
 
-// 一级：获取平台
+const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1";
+const site = "http://api.maiyoux.com:81";
+
+// 一级：平台列表
 async function loadPlatforms() {
-  const infoUrl = "https://iphone8.vip/conf.json";
-  let response;
+  const url = site + "/mf/json.txt";
   try {
-    response = await Widget.http.get({ url: infoUrl });
-  } catch (e) {
-    console.log("获取配置信息失败", e);
-    return [];
-  }
-
-  const info = response.data;
-  if (!info || !info.turl) return [];
-
-  const platformsUrl = decodeBase64(info.turl) + "json.txt";
-
-  let platResponse;
-  try {
-    platResponse = await Widget.http.get({
-      url: platformsUrl,
-      header: {
-        "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2; OPPO R11 Build/NMF26X)"
-      }
+    const { data } = await Widget.http.get({
+      url: url,
+      header: { "User-Agent": UA }
     });
+
+    const ignoreList = ["卫视直播", "龙珠", "映客"];
+    const platforms = data?.pingtai || [];
+
+    const result = platforms
+      .filter(p => !ignoreList.some(name => p.title.includes(name)))
+      .map(p => ({
+        id: p.address,
+        type: "list",           // ✅ 必须是 "list"
+        title: `${p.title} (${p.Number})`,
+        posterPath: p.xinimg,
+        onClick: async () => await loadStreamers(p.address, p.title)
+      }));
+
+    return result;
+
   } catch (e) {
     console.log("获取平台失败", e);
     return [];
   }
-
-  const platforms = platResponse.data?.pingtai || [];
-  return platforms.map(item => ({
-    id: item.address,
-    type: "list",
-    title: `${item.title} (${item.Number})`,
-    posterPath: item.xinimg,
-    onClick: async () => await loadStreamers(item.address, item.title)
-  }));
 }
 
-// 二级：获取主播
-async function loadStreamers(platformId, platformName) {
-  const infoUrl = "https://iphone8.vip/conf.json";
-  let response;
+// 二级：主播列表
+async function loadStreamers(address, platformName) {
+  const url = `${site}/mf/${address}`;
   try {
-    response = await Widget.http.get({ url: infoUrl });
-  } catch (e) {
-    console.log("获取配置信息失败", e);
-    return [];
-  }
-
-  const info = response.data;
-  const streamerUrl = decodeBase64(info.turl) + platformId;
-
-  let streamResponse;
-  try {
-    streamResponse = await Widget.http.get({
-      url: streamerUrl,
-      header: {
-        "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2; OPPO R11 Build/NMF26X)"
-      }
+    const { data } = await Widget.http.get({
+      url: url,
+      header: { "User-Agent": UA }
     });
+
+    const streamers = data?.zhubo || [];
+    const items = streamers
+      .filter(zb => zb.address && !zb.address.startsWith("rtmp"))
+      .map(zb => ({
+        id: zb.address,
+        type: "video",         // ✅ 必须是 "video"
+        title: zb.title,
+        posterPath: zb.img,
+        videoUrl: zb.address   // ✅ 必须给 videoUrl
+      }));
+
+    return [
+      {
+        title: `${platformName} 主播列表`,  // ✅ 必须有 title
+        items: items
+      }
+    ];
+
   } catch (e) {
-    console.log("获取主播列表失败", e);
+    console.log("获取主播失败", e);
     return [];
-  }
-
-  const zhuboList = streamResponse.data?.zhubo || [];
-
-  return [{
-    title: `${platformName} 主播列表`,
-    items: zhuboList.map(item => ({
-      id: item.address,
-      type: "video",
-      title: item.title,
-      posterPath: item.img,
-      videoUrl: item.address // 🚩 直接给 Forward 播放，无需任何前缀
-    }))
-  }];
-}
-
-// 工具：Base64解码
-function decodeBase64(str) {
-  try {
-    return Widget.text.base64Decode(str.replace(/lz7z/g, "a"));
-  } catch (e) {
-    console.log("Base64解码失败", e);
-    return "";
   }
 }
