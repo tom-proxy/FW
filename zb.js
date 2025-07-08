@@ -1,13 +1,13 @@
 var WidgetMetadata = {
   id: "juhe_live",
   title: "聚合直播",
-  description: "Forward",
+  description: "1",
   author: "小良科技",
   version: "1.0.0",
   modules: [
     {
       title: "聚合直播",
-      description: "支持多平台聚合直播观看",
+      description: "1",
       functionName: "loadPlatforms",
       cacheDuration: 600,
       params: []
@@ -20,63 +20,60 @@ const site = "http://api.maiyoux.com:81";
 
 // 一级：平台列表
 async function loadPlatforms() {
-  const url = site + "/mf/json.txt";
+  const url = `${site}/mf/json.txt`;
   try {
     const { data } = await Widget.http.get({
-      url: url,
+      url,
       header: { "User-Agent": UA }
     });
 
-    const ignoreList = ["卫视直播", "龙珠", "映客"];
+    const ignore = ["卫视直播", "龙珠", "映客"];
     const platforms = data?.pingtai || [];
-
     const result = platforms
-      .filter(p => !ignoreList.some(name => p.title.includes(name)))
-      .map(p => ({
-        id: p.address,
-        type: "list",           // ✅ 必须是 "list"
-        title: `${p.title} (${p.Number})`,
-        posterPath: p.xinimg,
-        onClick: async () => await loadStreamers(p.address, p.title)
+      .filter(e => !ignore.some(name => e.title.includes(name)))
+      .map(e => ({
+        id: e.address,
+        type: "list",
+        title: `${e.title} (${e.Number})`,
+        posterPath: e.xinimg,
+        onClick: async () => await loadStreamers(e.address, e.title)
       }));
 
     return result;
 
   } catch (e) {
-    console.log("获取平台失败", e);
+    console.log("平台列表加载失败", e);
     return [];
   }
 }
 
 // 二级：主播列表
-async function loadStreamers(address, platformName) {
-  const url = `${site}/mf/${address}`;
+async function loadStreamers(platformId, platformName) {
+  const url = `${site}/mf/${platformId}`;
   try {
     const { data } = await Widget.http.get({
-      url: url,
+      url,
       header: { "User-Agent": UA }
     });
 
     const streamers = data?.zhubo || [];
     const items = streamers
-      .filter(zb => zb.address && !zb.address.startsWith("rtmp"))
-      .map(zb => ({
-        id: zb.address,
-        type: "video",         // ✅ 必须是 "video"
-        title: zb.title,
-        posterPath: zb.img,
-        videoUrl: zb.address   // ✅ 必须给 videoUrl
+      .filter(e => e.address && !e.address.startsWith("rtmp"))
+      .map(e => ({
+        id: e.address,
+        type: "video",
+        title: e.title,
+        posterPath: e.img,
+        videoUrl: e.address
       }));
 
-    return [
-      {
-        title: `${platformName} 主播列表`,  // ✅ 必须有 title
-        items: items
-      }
-    ];
+    return [{
+      title: `${platformName} 主播列表`,
+      items
+    }];
 
   } catch (e) {
-    console.log("获取主播失败", e);
+    console.log("主播列表加载失败", e);
     return [];
   }
 }
