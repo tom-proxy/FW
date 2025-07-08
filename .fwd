@@ -105,12 +105,11 @@
     {
       "id": "juhe_live",
       "title": "聚合直播",
-      "description": "选择平台→主播→播放",
+      "description": "forward",
       "requiredVersion": "1.0.1",
       "version": "1.0.5",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/zb.js",
-      "scriptType": "widget"
     }
   ]
 }
