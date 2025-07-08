@@ -4,15 +4,6 @@
   "icon": "https://raw.githubusercontent.com/tom-proxy/AV/refs/heads/master/QuantumultX/AV/TX.png",
   "widgets": [
     {
-      "id": "jable",
-      "title": "Jable",
-      "description": "⚝五折码：TOM.5⚝",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.6",
-      "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/jable.js"
-    },
-    {
       "id": "91porn",
       "title": "91Porn",
       "description": "⚝五折码：TOM.5⚝",
@@ -29,6 +20,15 @@
       "version": "1.0.4",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/pornhub.js"
+    },
+    {
+      "id": "jable",
+      "title": "Jable",
+      "description": "⚝五折码：TOM.5⚝",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.6",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/jable.js"
     },
     {
       "id": "JAVDay",
