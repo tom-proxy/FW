@@ -4,7 +4,6 @@ var WidgetMetadata = {
   description: "Forward",
   author: "小良科技",
   version: "1.0.0",
-  icon: "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
   modules: [
     {
       title: "聚合直播",
