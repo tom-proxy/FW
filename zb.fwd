@@ -1,0 +1,15 @@
+{
+  "title": "🅣🅞🅜",
+  "description": "🔞",
+  "icon": "https://raw.githubusercontent.com/tom-proxy/AV/refs/heads/master/QuantumultX/AV/TX.png",
+  "widgets": [
+    {
+      "id": "Bitch",
+      "title": "碧池直播",
+      "description": "⚝五折码：TOM.5⚝",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/zb.js"
+    }
+  ]
