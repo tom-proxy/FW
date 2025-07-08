@@ -4,6 +4,15 @@
   "icon": "https://raw.githubusercontent.com/tom-proxy/AV/refs/heads/master/QuantumultX/AV/TX.png",
   "widgets": [
     {
+      "id": "qmszb",
+      "title": "秋名山直播",
+      "description": "直播",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/zb.js"
+    },
+    {
       "id": "91porn",
       "title": "91Porn",
       "description": "⚝五折码：TOM.5⚝",
