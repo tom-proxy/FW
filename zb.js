@@ -3,7 +3,7 @@ var WidgetMetadata = {
   title: "碧池直播",
   description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
-  site: "http://api.maiyoux.com:81",
+  site: "@🅣🅞🅜",
   version: "1.0.0",
   requiredVersion: "0.0.1",
   modules: [
