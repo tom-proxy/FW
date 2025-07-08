@@ -4,9 +4,9 @@
   "icon": "https://raw.githubusercontent.com/tom-proxy/AV/refs/heads/master/QuantumultX/AV/TX.png",
   "widgets": [
     {
-      "id": "qmszb",
-      "title": "秋名山直播",
-      "description": "直播",
+      "id": "碧池直播",
+      "title": "碧池直播",
+      "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "🅣🅞🅜",
