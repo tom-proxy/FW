@@ -2,8 +2,8 @@ var WidgetMetadata = {
   id: "qmszb",
   title: "秋名山直播",
   description: "直播",
-  author: "🅣🅞🅜",
-  site: "site",
+  author: "name",
+  site: "http://api.maiyoux.com:81",
   version: "1.0.0",
   requiredVersion: "0.0.1",
   modules: [
