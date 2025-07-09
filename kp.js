@@ -34,31 +34,34 @@ async function getVideos(params = {}) {
   try {
     if (!params.category) throw new Error("缺少必要参数: category");
 
-    const baseUrl = "https://9dqx.sm287.vip";  // 明文写死，防止Forward不支持base64解码
-    const url = `${baseUrl}${params.category}.html`;
+    const baseUrl = "https://9dqx.sm287.vip";
+    const pageUrl = `${baseUrl}${params.category}.html`;
 
-    console.log("[资源获取] 请求URL:", url);
+    console.log("[资源获取] 请求URL:", pageUrl);
 
-    const response = await Widget.http.get(url, {
+    const response = await Widget.http.get(pageUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
+        "Referer": baseUrl
       }
     });
 
     if (!response?.data) throw new Error("API返回空数据");
 
-    let html = response.data.replace(/\n|\s|\r/g, "");
+    const html = response.data.replace(/\n|\s|\r/g, "");
     const mainMatch = html.match(/<divclass=\"main\">.*?<divclass=\"pagebtn\">/g);
     if (!mainMatch) throw new Error("页面结构识别失败");
 
     const section = mainMatch[0];
     const items = section.match(/<aclass=\"vodbox\".*?<\/script>/g);
-    if (!items || items.length === 0) throw new Error("未找到视频条目");
+    if (!items || items.length === 0) throw new Error("未找到视频数据");
 
-    const decodeTitle = (r) => {
-      let n = "";
-      for (let i = 0; i < r.length; ++i) n += String.fromCharCode(128 ^ r.charCodeAt(i));
-      return n;
+    const decodeTitle = (encoded) => {
+      let result = "";
+      for (let i = 0; i < encoded.length; ++i) {
+        result += String.fromCharCode(128 ^ encoded.charCodeAt(i));
+      }
+      return result;
     };
 
     const videos = items.map(item => {
@@ -68,12 +71,21 @@ async function getVideos(params = {}) {
 
       if (!imgMatch || !titleMatch || !hrefMatch) return null;
 
+      // 封面图：自动补全为绝对路径
+      const imgUrl = imgMatch[1].startsWith("http") ? imgMatch[1] : `${baseUrl}${imgMatch[1]}`;
+
+      // 视频链接：自动补全为绝对路径
+      const videoPath = hrefMatch[1].startsWith("http") ? hrefMatch[1] : `${baseUrl}${hrefMatch[1]}`;
+
+      // 标题解密
+      const videoTitle = decodeTitle(titleMatch[1]);
+
       return {
-        id: hrefMatch[1],
-        type: "webview",   // Forward直接支持打开Web
-        title: decodeTitle(titleMatch[1]),
-        posterPath: imgMatch[1],
-        videoUrl: `${baseUrl}${hrefMatch[1]}`
+        id: videoPath,
+        type: "webview",
+        title: videoTitle,
+        posterPath: imgUrl,
+        videoUrl: videoPath
       };
     }).filter(v => v !== null);
 
