@@ -32,7 +32,9 @@ var WidgetMetadata = {
 
 async function getVideos(params = {}) {
   try {
-    if (!params.category) throw new Error("缺少必要参数: category");
+    if (!params.category) {
+      throw new Error("缺少必要参数: category");
+    }
 
     const base64Url = "aHR0cHM6Ly85ZHF4LnNtMjg3LnZpcA==";
     const baseUrl = Widget.text.base64Decode(base64Url);
@@ -42,14 +44,16 @@ async function getVideos(params = {}) {
 
     const response = await Widget.http.get(url, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
       }
     });
 
-    if (!response?.data) throw new Error("API返回空数据");
+    if (!response?.data) {
+      throw new Error("API返回空数据");
+    }
 
     let html = response.data.replace(/\n|\s|\r/g, "");
-    const mainMatch = html.match(/<divclass=\"main\">.*?<divclass=\"pagebtn\">/g);
+    const mainMatch = html.match(/<divclass=\"main\">.*?<divclass=\"pagebtn\">/);
     if (!mainMatch) throw new Error("页面结构识别失败");
 
     const section = mainMatch[0];
@@ -62,8 +66,6 @@ async function getVideos(params = {}) {
       return n;
     };
 
-    const getFullUrl = (base, path) => path.startsWith("http") ? path : `${base}${path}`;
-
     const videos = items.map(item => {
       const imgMatch = item.match(/src="(\S*?)"/);
       const titleMatch = item.match(/l\(\'(\S*?)\'/);
@@ -71,20 +73,20 @@ async function getVideos(params = {}) {
 
       if (!imgMatch || !titleMatch || !hrefMatch) return null;
 
-      const posterFull = getFullUrl(baseUrl, imgMatch[1]);
-      const videoPageFull = getFullUrl(baseUrl, hrefMatch[1]);
+      const videoUrl = `${baseUrl}${hrefMatch[1]}`; // 必须WebView播放
 
       return {
-        id: videoPageFull,
-        type: "webview",  // 强制WebView播放
+        id: hrefMatch[1],
+        type: "webview",
         title: decodeTitle(titleMatch[1]),
-        posterPath: posterFull,
-        videoUrl: videoPageFull,  // 必须是原网页地址
-        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
+        posterPath: imgMatch[1],
+        videoUrl: videoUrl
       };
     }).filter(v => v !== null);
 
-    if (videos.length === 0) console.warn("警告：无有效视频数据");
+    if (videos.length === 0) {
+      console.warn("警告：无有效视频数据");
+    }
 
     return videos;
 
