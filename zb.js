@@ -4,7 +4,7 @@ var WidgetMetadata = {
   description: "直播",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
-  version: "1.0.0",
+  version: "0.0.1",
   requiredVersion: "0.0.1",
   modules: [
     {
