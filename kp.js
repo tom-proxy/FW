@@ -48,48 +48,49 @@ async function getVideos(params = {}) {
 
     if (!response?.data) throw new Error("API返回空数据");
 
+    // 完整复刻JSBox原逻辑：过滤、解码、拼接
     const html = response.data.replace(/\n|\s|\r/g, "");
     const mainMatch = html.match(/<divclass=\"main\">.*?<divclass=\"pagebtn\">/g);
-    if (!mainMatch) throw new Error("页面结构识别失败");
+    if (!mainMatch) throw new Error("页面结构解析失败");
 
-    const section = mainMatch[0];
-    const items = section.match(/<aclass=\"vodbox\".*?<\/script>/g);
-    if (!items || items.length === 0) throw new Error("未找到视频数据");
+    const content = mainMatch[0];
+    const itemList = content.match(/<aclass=\"vodbox\".*?<\/script>/g);
+    if (!itemList || itemList.length === 0) throw new Error("未找到视频数据");
 
-    const decodeTitle = (encoded) => {
+    const decodeTitle = (str) => {
       let result = "";
-      for (let i = 0; i < encoded.length; ++i) {
-        result += String.fromCharCode(128 ^ encoded.charCodeAt(i));
+      for (let i = 0; i < str.length; ++i) {
+        result += String.fromCharCode(128 ^ str.charCodeAt(i));
       }
       return result;
     };
 
-    const videos = items.map(item => {
+    const videos = itemList.map(item => {
       const imgMatch = item.match(/src="(\S*?)"/);
       const titleMatch = item.match(/l\(\'(\S*?)\'/);
       const hrefMatch = item.match(/href=\"(\S*?)\"/);
 
       if (!imgMatch || !titleMatch || !hrefMatch) return null;
 
-      // 封面图：自动补全为绝对路径
+      // ✅ 确保图片URL与原JSBox一致
       const imgUrl = imgMatch[1].startsWith("http") ? imgMatch[1] : `${baseUrl}${imgMatch[1]}`;
 
-      // 视频链接：自动补全为绝对路径
-      const videoPath = hrefMatch[1].startsWith("http") ? hrefMatch[1] : `${baseUrl}${hrefMatch[1]}`;
+      // ✅ 确保视频链接与原JSBox一致
+      const videoHref = hrefMatch[1].startsWith("http") ? hrefMatch[1] : `${baseUrl}${hrefMatch[1]}`;
 
-      // 标题解密
+      // ✅ 标题严格解码
       const videoTitle = decodeTitle(titleMatch[1]);
 
       return {
-        id: videoPath,
+        id: videoHref,
         type: "webview",
         title: videoTitle,
         posterPath: imgUrl,
-        videoUrl: videoPath
+        videoUrl: videoHref
       };
     }).filter(v => v !== null);
 
-    if (videos.length === 0) throw new Error("无有效视频数据");
+    if (videos.length === 0) throw new Error("解析后无有效视频数据");
 
     return videos;
 
