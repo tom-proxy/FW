@@ -1,10 +1,10 @@
 var WidgetMetadata = {
-  id: "movie_paradise",
+  id: "在线影院",
   title: "在线影院",
-  description: "获取在线电影、电视剧、动漫、综艺和短剧",
+  description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "＠🅣🅞🅜",
-  version: "1.0.0",
+  version: "0.0.1",
   requiredVersion: "0.0.1",
   modules: [
     {
