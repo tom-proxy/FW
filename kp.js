@@ -36,8 +36,8 @@ async function getVideos(params = {}) {
       throw new Error("缺少必要参数: category");
     }
 
-    const base64Url = "aHR0cHM6Ly85ZHF4LnNtMjg3LnZpcA==";
-    const baseUrl = Widget.text.base64Decode(base64Url);
+    // ❗ 直接使用解码后的真实地址，不再用 base64
+    const baseUrl = "https://9dqx.sm287.vip";
     const url = `${baseUrl}${params.category}.html`;
 
     console.log('[资源获取] 请求URL:', url);
@@ -73,11 +73,11 @@ async function getVideos(params = {}) {
 
       if (!imgMatch || !titleMatch || !hrefMatch) return null;
 
-      const videoUrl = `${baseUrl}${hrefMatch[1]}`; // 必须WebView播放
+      const videoUrl = `${baseUrl}${hrefMatch[1]}`; 
 
       return {
         id: hrefMatch[1],
-        type: "webview",
+        type: "webview",  // 必须 WebView
         title: decodeTitle(titleMatch[1]),
         posterPath: imgMatch[1],
         videoUrl: videoUrl
