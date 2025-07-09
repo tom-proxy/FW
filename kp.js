@@ -31,26 +31,21 @@ var WidgetMetadata = {
 };
 
 async function openCategory(params = {}) {
-  try {
-    const baseUrl = "https://9dqx.sm287.vip";
-    const path = params.category || "/list/1.html";
-    const finalUrl = `${baseUrl}${path}`;
+  const baseUrl = "https://9dqx.sm287.vip";
+  const categoryPath = params.category || "/list/1.html";
+  const finalUrl = baseUrl + categoryPath;
 
-    return {
-      type: "webview",
-      url: finalUrl,
-      userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
-      script: `
-        try {
-          var header = document.querySelector('.ppnav');
-          if (header) header.style.display = 'none';
-          
-          var footer = document.querySelector('.footer');
-          if (footer) footer.style.display = 'none';
-        } catch(e) {}
-      `
-    };
-  } catch (e) {
-    throw new Error("页面加载失败：" + e.message);
-  }
+  return Promise.resolve({
+    type: "webview",
+    url: finalUrl,
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
+    script: `
+      try {
+        var header = document.querySelector('.ppnav');
+        if (header) header.style.display = 'none';
+        var footer = document.querySelector('.footer');
+        if (footer) footer.style.display = 'none';
+      } catch(e) {}
+    `
+  });
 }
