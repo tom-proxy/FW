@@ -17,13 +17,12 @@ var WidgetMetadata = {
           title: "类型",
           type: "enumeration",
           enumOptions: [
-            { title: "精选", value: "/list/1" },
-            { title: "国产", value: "/list/2" },
-            { title: "日本", value: "/list/3" },
-            { title: "韩国", value: "/list/4" },
-            { title: "欧美", value: "/list/5" },
-            { title: "三级", value: "/list/6" },
-            { title: "动漫", value: "/list/7" }
+            { title: "国产", value: "/list/1" },
+            { title: "日本", value: "/list/2" },
+            { title: "韩国", value: "/list/3" },
+            { title: "欧美", value: "/list/4" },
+            { title: "三级", value: "/list/5" },
+            { title: "动漫", value: "/list/6" }
           ]
         }
       ]
