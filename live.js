@@ -205,7 +205,7 @@ WidgetMetadata = {
             ],
         },
     ],
-    version: "1.0.8",
+    version: "0.0.1",
     requiredVersion: "0.0.1",
     description: "⚝五折码：TOM.5⚝",
     author: "🅣🅞🅜",
