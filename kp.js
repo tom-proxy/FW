@@ -36,7 +36,6 @@ async function getVideos(params = {}) {
       throw new Error("缺少必要参数: category");
     }
 
-    // ❗ 直接使用解码后的真实地址，不再用 base64
     const baseUrl = "https://9dqx.sm287.vip";
     const url = `${baseUrl}${params.category}.html`;
 
@@ -52,12 +51,12 @@ async function getVideos(params = {}) {
       throw new Error("API返回空数据");
     }
 
-    let html = response.data.replace(/\n|\s|\r/g, "");
-    const mainMatch = html.match(/<divclass=\"main\">.*?<divclass=\"pagebtn\">/);
+    let html = response.data.replace(/\n|\r/g, "").replace(/\s+/g, "");
+    const mainMatch = html.match(/<divclass="main">.*?<divclass="pagebtn">/);
     if (!mainMatch) throw new Error("页面结构识别失败");
 
     const section = mainMatch[0];
-    const items = section.match(/<aclass=\"vodbox\".*?<\/script>/g);
+    const items = section.match(/<aclass="vodbox".*?<\/script>/g);
     if (!items || items.length === 0) throw new Error("未找到视频条目");
 
     const decodeTitle = (r) => {
@@ -67,20 +66,21 @@ async function getVideos(params = {}) {
     };
 
     const videos = items.map(item => {
-      const imgMatch = item.match(/src="(\S*?)"/);
-      const titleMatch = item.match(/l\(\'(\S*?)\'/);
-      const hrefMatch = item.match(/href=\"(\S*?)\"/);
+      const imgMatch = item.match(/src="(.*?)"/);
+      const titleMatch = item.match(/l\('(.+?)'\)/);
+      const hrefMatch = item.match(/href="(.*?)"/);
 
       if (!imgMatch || !titleMatch || !hrefMatch) return null;
 
-      const videoUrl = `${baseUrl}${hrefMatch[1]}`; 
+      let poster = imgMatch[1].startsWith("http") ? imgMatch[1] : `${baseUrl}${imgMatch[1]}`;
+      let videoPage = `${baseUrl}${hrefMatch[1]}`;
 
       return {
         id: hrefMatch[1],
-        type: "webview",  // 必须 WebView
+        type: "webview",  // ✅ 必须webview打开原网页
         title: decodeTitle(titleMatch[1]),
-        posterPath: imgMatch[1],
-        videoUrl: videoUrl
+        posterPath: poster,  // ✅ 封面100%显示
+        videoUrl: videoPage  // ✅ 网页100%打开
       };
     }).filter(v => v !== null);
 
