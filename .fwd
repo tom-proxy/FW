@@ -8,7 +8,7 @@
       "title": "碧池直播",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/zb.js"
     },
@@ -17,7 +17,7 @@
       "title": "91Porn",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "0.5.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/91pron.js"
     },
@@ -26,7 +26,7 @@
       "title": "Pornhub",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.4",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/pornhub.js"
     },
@@ -35,7 +35,7 @@
       "title": "Jable",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.6",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/jable.js"
     },
@@ -44,7 +44,7 @@
       "title": "JAVDay",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.1.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/JAVDAY.js"
     },
@@ -53,7 +53,7 @@
       "title": "JAVRate",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "2.1.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/JAVRate.js"
     },
@@ -62,7 +62,7 @@
       "title": "XVideos",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "0.9.4",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/XVideos.js"
     },
@@ -71,7 +71,7 @@
       "title": "VOD",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.1.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/VOD.js"
     },
@@ -80,7 +80,7 @@
       "title": "在线影院",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/movies.js"
     },
@@ -89,7 +89,7 @@
       "title": "RSS播客",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/Podcast.js"
     },
@@ -98,7 +98,7 @@
       "title": "直播(电视+网络)",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.8",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/live.js"
     },
@@ -107,7 +107,7 @@
       "title": "电视台",
       "description": "⚝五折码：TOM.5⚝",
       "requiredVersion": "0.0.1",
-      "version": "1.0.0",
+      "version": "0.0.1",
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/TVlive.js"
     }
