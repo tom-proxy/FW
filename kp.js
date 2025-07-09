@@ -17,12 +17,13 @@ var WidgetMetadata = {
           title: "类型",
           type: "enumeration",
           enumOptions: [
-            { title: "国产", value: "/list/1" },
-            { title: "日本", value: "/list/2" },
-            { title: "韩国", value: "/list/3" },
-            { title: "欧美", value: "/list/4" },
-            { title: "三级", value: "/list/5" },
-            { title: "动漫", value: "/list/6" }
+            { title: "精选", value: "/list/1" },
+            { title: "国产", value: "/list/2" },
+            { title: "日本", value: "/list/3" },
+            { title: "韩国", value: "/list/4" },
+            { title: "欧美", value: "/list/5" },
+            { title: "三级", value: "/list/6" },
+            { title: "动漫", value: "/list/7" }
           ]
         }
       ]
@@ -32,16 +33,12 @@ var WidgetMetadata = {
 
 async function getVideos(params = {}) {
   try {
-    if (!params.category) {
-      throw new Error("缺少必要参数: category");
-    }
+    if (!params.category) throw new Error("缺少必要参数: category");
 
-    const base64Url = "https://9dqx.sm287.vip";
-    const baseUrl = Widget.text.base64Decode(base64Url);
-    const page = 1; // Forward不支持分页，默认第一页
+    const baseUrl = "https://9dqx.sm287.vip";  // 明文写死，防止Forward不支持base64解码
     const url = `${baseUrl}${params.category}.html`;
 
-    console.log('[资源获取] 请求URL:', url);
+    console.log("[资源获取] 请求URL:", url);
 
     const response = await Widget.http.get(url, {
       headers: {
@@ -49,9 +46,7 @@ async function getVideos(params = {}) {
       }
     });
 
-    if (!response?.data) {
-      throw new Error("API返回空数据");
-    }
+    if (!response?.data) throw new Error("API返回空数据");
 
     let html = response.data.replace(/\n|\s|\r/g, "");
     const mainMatch = html.match(/<divclass=\"main\">.*?<divclass=\"pagebtn\">/g);
@@ -76,16 +71,14 @@ async function getVideos(params = {}) {
 
       return {
         id: hrefMatch[1],
-        type: "webview",
+        type: "webview",   // Forward直接支持打开Web
         title: decodeTitle(titleMatch[1]),
         posterPath: imgMatch[1],
         videoUrl: `${baseUrl}${hrefMatch[1]}`
       };
     }).filter(v => v !== null);
 
-    if (videos.length === 0) {
-      console.warn("警告：无有效视频数据");
-    }
+    if (videos.length === 0) throw new Error("无有效视频数据");
 
     return videos;
 
