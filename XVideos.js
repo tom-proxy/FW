@@ -826,7 +826,7 @@ WidgetMetadata = {
     id: 'xvideos',
     title: 'XVideos',
     description: '⚝五折码：TOM.5⚝',
-    version: "0.9.4",
+    version: "0.0.1",
     requiredVersion: '0.0.1',
     author: "🅣🅞🅜",
     site: '@🅣🅞🅜',
