@@ -36,7 +36,7 @@ async function getVideos(params = {}) {
       throw new Error("缺少必要参数: category");
     }
 
-    const base64Url = "aHR0cHM6Ly85ZHF4LnNtMjg3LnZpcA==";
+    const base64Url = "https://9dqx.sm287.vip";
     const baseUrl = Widget.text.base64Decode(base64Url);
     const page = 1; // Forward不支持分页，默认第一页
     const url = `${baseUrl}${params.category}.html`;
