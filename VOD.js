@@ -20,7 +20,6 @@ var WidgetMetadata = {
           description: "当前仅支持苹果CMS的JSON API地址 (例如: https://example.com/api.php/provide/vod/)",
           value: "https://api.wwzy.tv/api.php/provide/vod/",
           placeholders: [
-            { title: "OK资源", value: "https://okzyw9.com/api.php/provide/vod/" },
             { title: "360资源", value: "https://360zy.com/api.php/provide/vod/" },
             { title: "墨斗资源", value: "https://www.mdzyapi.com/api.php/provide/vod/" },
             { title: "华为资源", value: "https://hw8.live/api.php/provide/vod/" },
@@ -64,8 +63,7 @@ var WidgetMetadata = {
             { title: "阿里资源", value: "https://alivod.com/api.php/provide/vod/" },
             { title: "魔抓资源", value: "https://mozhuazy.com/api.php/provide/vod/" },
             { title: "豆瓣资源", value: "https://caiji.dbzy.tv/api.php/provide/vod/at/josn/" },
-            { title: "先锋资源", value: "http://60.204.225.89:1122/api.php/provide/vod/" },
-            { title: "LSP", value: "https://apilsbzy1.com/api.php/provide/vod/" },
+            { title: "老色逼", value: "https://apilsbzy1.com/api.php/provide/vod/" },
             { title: "含羞资源", value: "https://api.souavzy.vip/api.php/provide/vod/" },
             { title: "玉兔资源", value: "https://apiyutu.com/api.php/provide/vod/" },
             { title: "森林资源", value: "https://slapibf.com/api.php/provide/vod/" },
