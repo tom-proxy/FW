@@ -1,9 +1,9 @@
 var WidgetMetadata = {
   id: "Bitch",
   title: "碧池直播",
-  description: "直播",
+  description: "TOM.5",
   author: "🅣🅞🅜",
-  site: "TOM.5",
+  site: "@🅣🅞🅜",
   version: "0.0.1",
   requiredVersion: "0.0.1",
   modules: [
