@@ -13,6 +13,33 @@
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/zb.js"
     },
     {
+      "id": "VOD",
+      "title": "VOD",
+      "description": "⚝五折码：TOM.5⚝",
+      "requiredVersion": "0.0.1",
+      "version": "0.0.1",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/VOD.js"
+    },
+    {
+      "id": "tv_live",
+      "title": "电视台",
+      "description": "⚝五折码：TOM.5⚝",
+      "requiredVersion": "0.0.1",
+      "version": "0.0.1",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/TVlive.js"
+    },
+    {
+      "id": "live",
+      "title": "直播(电视+网络)",
+      "description": "⚝五折码：TOM.5⚝",
+      "requiredVersion": "0.0.1",
+      "version": "0.0.1",
+      "author": "🅣🅞🅜",
+      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/live.js"
+    },
+    {
       "id": "91porn",
       "title": "91Porn",
       "description": "⚝五折码：TOM.5⚝",
@@ -67,15 +94,6 @@
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/XVideos.js"
     },
     {
-      "id": "VOD",
-      "title": "VOD",
-      "description": "⚝五折码：TOM.5⚝",
-      "requiredVersion": "0.0.1",
-      "version": "0.0.1",
-      "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/VOD.js"
-    },
-    {
       "id": "movie_paradise",
       "title": "在线影院",
       "description": "⚝五折码：TOM.5⚝",
@@ -93,23 +111,5 @@
       "author": "🅣🅞🅜",
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/Podcast.js"
     },
-    {
-      "id": "live",
-      "title": "直播(电视+网络)",
-      "description": "⚝五折码：TOM.5⚝",
-      "requiredVersion": "0.0.1",
-      "version": "0.0.1",
-      "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/live.js"
-    },
-    {
-      "id": "tv_live",
-      "title": "电视台",
-      "description": "⚝五折码：TOM.5⚝",
-      "requiredVersion": "0.0.1",
-      "version": "0.0.1",
-      "author": "🅣🅞🅜",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/TVlive.js"
-    }
   ]
 }
