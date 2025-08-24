@@ -1,9 +1,9 @@
 var WidgetMetadata = {
     id: "missav",
     title: "MissAV",
-    description: "🅣🅞🅜",
-    author: "@🅣🅞🅜",
-    site: "https://widgets-xd.vercel.app",
+    description: "TOM.5",
+    author: "🅣🅞🅜",
+    site: "@🅣🅞🅜",
     version: "0.0.1",
     requiredVersion: "0.0.1",
     detailCacheDuration: 300,
