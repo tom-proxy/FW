@@ -1,11 +1,11 @@
 var WidgetMetadata = {
     id: "missav",
     title: "MissAV",
-    description: "\u83b7\u53d6 MissAV \u63a8\u8350",
-    author: "饾搼饾摼饾摻饾摻饾摦饾摶饾摨饾摰饾攤",
+    description: "🅣🅞🅜",
+    author: "@🅣🅞🅜",
     site: "https://widgets-xd.vercel.app",
-    version: "1.0.0",
-    requiredVersion: "0.0.2",
+    version: "0.0.1",
+    requiredVersion: "0.0.1",
     detailCacheDuration: 300,
     modules: [
         {
