@@ -1,7 +1,7 @@
 var WidgetMetadata = {
     id: "missav",
     title: "MissAV",
-    description: "TOM.5",
+    description: "⚝五折码：TOM.5⚝",
     author: "🅣🅞🅜",
     site: "@🅣🅞🅜",
     version: "0.0.1",
