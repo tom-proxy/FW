@@ -1,272 +1,123 @@
-function compactArray(arr) {
-  let result = [];
-  for (let i = 0; i < arr.length; i++) {
-    let item = arr[i];
-    if (item) result.push(item);
-  }
-  return result;
-}
-
-function isPlainObject(obj) {
-  if (!obj || typeof obj !== "object") return false;
-  let proto = Object.getPrototypeOf(obj);
-  return (
-    (proto === null ||
-      proto === Object.prototype ||
-      Object.getPrototypeOf(proto) === null) &&
-    Object.prototype.toString.call(obj) === "[object Object]"
-  );
-}
-
-function deepMerge(target, source) {
-  let keys = Object.keys(source);
-  for (let i = 0; i < keys.length; i++) {
-    let key = keys[i];
-    if (key === "__proto__") continue;
-
-    let srcVal = source[key];
-    let tgtVal = target[key];
-
-    if (Array.isArray(srcVal)) {
-      target[key] = Array.isArray(tgtVal)
-        ? deepMerge(tgtVal, srcVal)
-        : deepMerge([], srcVal);
-    } else if (isPlainObject(srcVal)) {
-      target[key] = isPlainObject(tgtVal)
-        ? deepMerge(tgtVal, srcVal)
-        : deepMerge({}, srcVal);
-    } else {
-      if (tgtVal === undefined || srcVal !== undefined) {
-        target[key] = srcVal;
-      }
-    }
-  }
-  return target;
-}
-
-/* async / await polyfill helpers */
-
-function asyncStep(gen, resolve, reject, next, throwFn, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(next, throwFn);
-  }
-}
-
-function asyncWrapper(fn) {
-  return function () {
-    var self = this;
-    var args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function next(value) {
-        asyncStep(gen, resolve, reject, next, throwFn, "next", value);
-      }
-
-      function throwFn(err) {
-        asyncStep(gen, resolve, reject, next, throwFn, "throw", err);
-      }
-
-      next(undefined);
-    });
-  };
-}
-
-const DEFAULT_HEADERS = {
-  "Accept-Language": "zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7",
-};
-
-const BASE_URL = "https://91porn.com";
-
-/* HTTP Client */
-
-const httpClient = new (class {
-  constructor(getDefaultOptions) {
-    this.getDefaultOptions = getDefaultOptions;
-  }
-
-  get(url, options) {
-    return asyncWrapper(function* () {
-      let requestOptions = { headers: DEFAULT_HEADERS };
-
-      if (this.getDefaultOptions) {
-        try {
-          let defaults = yield this.getDefaultOptions();
-          requestOptions = deepMerge(requestOptions, defaults || {});
-        } catch (e) {
-          console.warn("获取默认配置失败，使用基础配置:", e);
-        }
-      }
-
-      requestOptions = deepMerge(requestOptions, options || {});
-
-      try {
-        let response = yield Widget.http.get(url, requestOptions);
-        if (!response || response.statusCode !== 200) {
-          throw new Error(
-            `请求失败: ${response?.statusCode || "未知错误"}`
-          );
-        }
-        return response.data;
-      } catch (e) {
-        throw new Error(
-          `网络请求失败: ${e instanceof Error ? e.message : "未知错误"}`
-        );
-      }
-    }).call(this);
-  }
-
-  getHtml(url, options) {
-    return asyncWrapper(function* () {
-      let html = yield this.get(url, options);
-      return Widget.html.load(html);
-    }).call(this);
-  }
-})();
-
-/* ================= Widget Metadata ================= */
-
-WidgetMetadata = {
-  id: "91porn",
+var WidgetMetadata = {
+  id: "porn91.forward",
   title: "91Porn",
-  description: "⚝五折码：TOM.5⚝",
-  author: "🅣🅞🅜",
-  version: "0.0.1",
+  description: "91Porn · Forward 原生解析版",
+  author: "Forward",
+  version: "1.0.0",
   requiredVersion: "0.0.1",
-  site: "@🅣🅞🅜",
-  detailCacheDuration: 1,
-  globalParams: [
-    {
-      name: "base_url",
-      title: "基础 URL",
-      type: "input",
-      value: BASE_URL,
-    },
-  ],
+  site: "https://91porn.com",
   modules: [
     {
-      id: "91porn.list",
-      title: "🔞 91Porn 视频搜索",
-      description: "🔞 91Porn 视频搜索",
-      cacheDuration: 3600,
-      requiresWebView: false,
+      id: "porn91.list",
+      title: "91Porn 列表",
       functionName: "get91pornList",
+      requiresWebView: false,
+      cacheDuration: 600,
       params: [
         {
           name: "sort_by",
           title: "分类",
           type: "enumeration",
-          value: "rf",
+          value: "ori",
           enumOptions: [
-            { value: "rf", title: "最近加精" },
-            { value: "hot", title: "当前最热" },
-            { value: "top", title: "本月最热" },
-            { value: "tf", title: "本月收藏" },
-            { value: "md", title: "本月讨论" },
-            { value: "top&m=-1", title: "上月最热" },
-            { value: "ori", title: "91原创" },
-            { value: "long", title: "10分钟以上" },
-            { value: "longer", title: "20分钟以上" },
-            { value: "hd", title: "高清" },
-            { value: "mf", title: "收藏最多" },
-          ],
+            { title: "91原创", value: "ori" },
+            { title: "最近加精", value: "rf" },
+            { title: "当前最热", value: "hot" },
+            { title: "本月最热", value: "top" }
+          ]
         },
         {
           name: "page",
           title: "页码",
           type: "page",
-          value: "1",
-        },
-      ],
+          value: "1"
+        }
+      ]
     },
     {
+      id: "porn91.play",
       type: "stream",
-      id: "loadResource",
-      title: "加载资源",
-      functionName: "loadResource",
-    },
-  ],
+      title: "播放",
+      functionName: "loadResource"
+    }
+  ]
 };
 
-/* ================= List ================= */
+/* ================= 列表 ================= */
 
-const get91pornList = (params) =>
-  asyncWrapper(function* () {
-    params.sort_by ||= "ori";
-    params.page ||= "1";
-    params.base_url ||= BASE_URL;
+async function get91pornList(params = {}) {
+  const baseUrl = "https://91porn.com";
+  const category = params.sort_by || "ori";
+  const page = params.page || "1";
 
-    try {
-      let $ = yield httpClient.getHtml(
-        `${params.base_url}/v.php?category=${params.sort_by}&viewtype=basic&page=${params.page}`
-      );
-      if (!$) return [];
+  const url = `${baseUrl}/v.php?category=${category}&viewtype=basic&page=${page}`;
 
-      let items = Array.from($(".videos-text-align")).map((el) => {
-        let node = $(el);
+  let res;
+  try {
+    res = await Widget.http.get(url);
+  } catch (e) {
+    console.error("请求失败", e);
+    return [];
+  }
 
-        if (node.closest(".col-lg-8").length > 0) return null;
+  if (!res || typeof res.data !== "string") return [];
 
-        let link = node.find("a").attr("href");
-        if (!link) return null;
+  const html = res.data;
+  const list = [];
 
-        let img = node.find(".img-responsive").attr("src");
+  const reg =
+    /<a href="(view_video\.php\?viewkey=[^"]+)"[\s\S]*?<img[^>]+src="([^"]+)"[\s\S]*?<span class="video-title">([\s\S]*?)<\/span>/g;
 
-        let video = {
-          id: link,
-          type: "url",
-          mediaType: "movie",
-          link,
-          title: node.find(".video-title").text().trim(),
-          backdropPath: img,
-        };
+  let match;
+  while ((match = reg.exec(html)) !== null) {
+    list.push({
+      id: match[1],
+      type: "url",
+      title: match[3].trim(),
+      posterPath: match[2],
+      videoUrl: baseUrl + "/" + match[1]
+    });
+  }
 
-        try {
-          video.durationText = node.find(".duration").text().trim();
-        } catch {}
+  return list;
+}
 
-        try {
-          let id = img?.split("/").pop()?.split(".")[0];
-          if (id) {
-            video.previewUrl = `https://vthumb.killcovid2021.com/thumb/${id}.mp4`;
-          }
-        } catch {}
+/* ================= 播放 ================= */
 
-        return video;
-      });
+async function loadResource(params) {
+  const url = params.videoUrl;
+  if (!url) return [];
 
-      return compactArray(items);
-    } catch (e) {
-      console.error("Failed to get 91porn list", e);
-      return [];
+  let res;
+  try {
+    res = await Widget.http.get(url);
+  } catch (e) {
+    console.error("详情页请求失败", e);
+    return [];
+  }
+
+  if (!res || typeof res.data !== "string") return [];
+
+  const html = res.data;
+
+  const encoded = html.match(/strencode2\("([^"]+)"\)/);
+  if (!encoded) return [];
+
+  let decoded;
+  try {
+    decoded = decodeURIComponent(encoded[1]);
+  } catch {
+    return [];
+  }
+
+  const source = decoded.match(/<source src="([^"]+)"/);
+  if (!source) return [];
+
+  return [
+    {
+      name: params.title || "91Porn",
+      url: source[1],
+      description: ""
     }
-  })();
-
-/* ================= Resource ================= */
-
-const loadResource = (params) =>
-  asyncWrapper(function* () {
-    let { id, link, videoUrl, base_url = BASE_URL } = params;
-    let target = [id, link, videoUrl].find(
-      (v) => v && v.startsWith(base_url)
-    );
-    if (!target) return [];
-
-    let detail = yield loadDetail(target);
-    return [
-      {
-        name: detail.title,
-        description: detail.description || "",
-        url: detail.videoUrl,
-      },
-    ];
-  })();
+  ];
+}
