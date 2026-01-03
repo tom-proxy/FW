@@ -9,7 +9,7 @@ var WidgetMetadata = {
   modules: [
     {
       title: "碧池直播",
-      requiresWebView: true, // 【修改】必须开启 WebView 才能显示右上角按钮
+      requiresWebView: false,
       functionName: "getVideos",
       params: [
         {
@@ -159,71 +159,53 @@ var WidgetMetadata = {
 
 async function getVideos(params = {}) {
   try {
-    /* ================= 新增：右上角分类切换 ================= */
+    if (!params.category) {
+      throw new Error("缺少必要参数: category");
+    }
+
+    // ✅ 右上角切换按钮（只加这个）
     Widget.setNavigationBarItems({
       rightItems: [
         {
           title: "切换",
           onClick: async () => {
+            const list = WidgetMetadata.modules[0].params[0].enumOptions;
             const index = await Widget.showActionSheet({
-              title: "切换类型",
-              options: WidgetMetadata.modules[0].params[0].enumOptions.map(i => i.title)
+              title: "切换直播类型",
+              options: list.map(i => i.title)
             });
-
             if (index === -1) return;
-
-            const value =
-              WidgetMetadata.modules[0].params[0].enumOptions[index].value;
-
-            // 关键：使用原有 params 机制刷新
-            Widget.reload({ category: value });
+            Widget.reload({ category: list[index].value });
           }
         }
       ]
     });
-    /* ================= 新增结束 ================= */
 
-    // 1. 参数验证（原样）
-    if (!params.category) {
-      throw new Error("缺少必要参数: category");
-    }
-
-    // 2. 构建请求URL（原样）
     const url = `http://api.maiyoux.com:81/mf/${params.category}.txt`;
-    console.log('[视频获取] 请求URL:', url);
+    console.log("[视频获取]", url);
 
-    // 3. 发送请求（原样）
     const response = await Widget.http.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 4.4.2; OPPO R11 Build/NMF26X) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36',
+        "User-Agent":
+          "Mozilla/5.0 (Linux; Android 4.4.2; OPPO R11 Build/NMF26X) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36",
         "Content-Type": "application/octet-stream"
       }
     });
 
-    // 4. 响应数据验证（原样）
-    if (!response?.data) {
-      throw new Error("API返回空数据");
-    }
-
-    // 5. 数据结构验证（原样）
-    if (typeof response.data !== 'object' || !Array.isArray(response.data.zhubo)) {
+    if (!response?.data || !Array.isArray(response.data.zhubo)) {
       throw new Error("无效的数据格式");
     }
 
-    // 6. 数据转换（原样）
-    const videos = response.data.zhubo
-      .filter(item => item.address && item.title)
-      .map(item => ({
-        id: item.address,
+    return response.data.zhubo
+      .filter(i => i.address && i.title)
+      .map(i => ({
+        id: i.address,
         type: "url",
-        title: item.title.trim(),
-        posterPath: item.img || '',
-        videoUrl: item.address
+        title: i.title.trim(),
+        posterPath: i.img || "",
+        videoUrl: i.address
       }));
-
-    return videos;
-
-  } catch (error) {
-    throw new Error(`视频获取失败: ${error.message}`);
+  } catch (e) {
+    throw new Error("视频获取失败: " + e.message);
   }
 }
