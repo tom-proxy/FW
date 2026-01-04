@@ -759,7 +759,7 @@ WidgetMetadata = {
     version: "0.0.1",
     requiredVersion: '0.0.1',
     site: '@🅣🅞🅜',
-    detailCacheDuration: 1,
+    detailCacheDuration: 60,
     modules: [
         {
             id: '91porn.list',
