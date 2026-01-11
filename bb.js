@@ -4,7 +4,7 @@ var WidgetMetadata = {
   description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
-  version: "0.0.3",
+  version: "0.0.1",
   requiredVersion: "0.0.1",
   modules: [
     {
