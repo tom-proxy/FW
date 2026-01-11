@@ -4,12 +4,12 @@ var WidgetMetadata = {
   description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
-  version: "0.0.2",
+  version: "1.0.0",
   requiredVersion: "0.0.1",
   modules: [
     {
       title: "碧池直播",
-      requiresWebView: false,
+      requiresWebView: true,
       functionName: "getVideos",
       params: [
         {
@@ -159,47 +159,26 @@ var WidgetMetadata = {
 
 async function getVideos(params = {}) {
   try {
-    if (!params.category) {
-      throw new Error("缺少必要参数: category");
-    }
-
     const url = `http://api.maiyoux.com:81/mf/${params.category}.txt`;
-    console.log("[视频获取] 请求URL:", url);
 
-    const response = await Widget.http.get(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2)",
-        "Accept": "*/*"
-      }
-    });
+    const res = await Widget.http.get(url, { responseType: "text" });
+    const data = JSON.parse(res.data);
 
-    if (!response || !response.data) {
-      throw new Error("API无返回内容");
-    }
-
-    let data;
-    if (typeof response.data === "string") {
-      data = JSON.parse(response.data);
-    } else {
-      data = response.data;
-    }
-
-    if (!data.zhubo || !Array.isArray(data.zhubo)) {
-      throw new Error("API数据结构异常");
+    if (!Array.isArray(data.zhubo)) {
+      throw new Error("数据结构异常");
     }
 
     return data.zhubo
       .filter(v => v.address && v.title)
       .map(v => ({
         id: v.address,
-        type: "url",
         title: v.title.trim(),
         posterPath: v.img || "",
-        videoUrl: v.address
+        type: "web",
+        url: v.address
       }));
 
-  } catch (err) {
-    console.error("模块执行失败:", err);
-    throw new Error(`视频获取失败: ${err.message}`);
+  } catch (e) {
+    throw new Error("未获取到视频数据");
   }
-}
+  }
