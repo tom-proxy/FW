@@ -1,18 +1,18 @@
 var WidgetMetadata = {
-  id: "aggregate_live_ultra",
-  title: "聚合直播 Ultra",
-  description: "ForwardWidgets 满血形态聚合直播模块",
+  id: "aggregate_live_pro",
+  title: "聚合直播 Pro",
+  description: "ForwardWidgets 最高规格聚合直播模块",
   author: "Forward",
   site: "http://api.maiyoux.com:81",
-  version: "3.0.0",
+  version: "2.0.0",
   requiredVersion: "0.0.1",
   modules: [
     {
       title: "直播平台",
-      description: "原生播放 · 自动兜底 · 智能优选",
+      description: "聚合直播 · 原生播放",
       functionName: "getLiveList",
-      sectionMode: true,
       requiresWebView: false,
+      sectionMode: true,
       cacheDuration: 300,
       params: [
         {
@@ -28,23 +28,32 @@ var WidgetMetadata = {
     title: "搜索直播",
     functionName: "searchLive",
     params: [
-      { name: "keyword", title: "关键词", type: "input" }
+      {
+        name: "keyword",
+        title: "关键词",
+        type: "input"
+      }
     ]
   }
 };
 
-const API = "http://api.maiyoux.com:81";
 const UA =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0.1 Mobile/15E148 Safari/604.1";
 
-const FAVORITE_KEY = "live_favorites";
-const RECENT_KEY = "live_recent";
+const API = "http://api.maiyoux.com:81";
 
-/* ───────── 生命周期：动态分类 ───────── */
+/**
+ * 初始化生命周期：动态注入平台分类
+ */
 async function prepare() {
-  const res = await Widget.http.get(`${API}/mf/json.txt`, {
+  const url = `${API}/mf/json.txt`;
+  const res = await Widget.http.get(url, {
     headers: { "User-Agent": UA }
   });
+
+  if (!res?.data?.pingtai) {
+    throw new Error("平台分类加载失败");
+  }
 
   const ignore = ["卫视直播", "龙珠", "映客"];
 
@@ -57,90 +66,57 @@ async function prepare() {
       }));
 }
 
-/* ───────── 工具：测速（HEAD） ───────── */
-async function ping(url) {
-  const start = Date.now();
-  try {
-    await Widget.http.head(url, { timeout: 3000 });
-    return Date.now() - start;
-  } catch {
-    return 99999;
-  }
-}
-
-/* ───────── 工具：收藏 / 最近 ───────── */
-function load(key) {
-  return Widget.storage.get(key) || [];
-}
-function save(key, value) {
-  Widget.storage.set(key, value.slice(0, 50));
-}
-
-/* ───────── 主模块 ───────── */
+/**
+ * 主模块：直播列表（分组模式）
+ */
 async function getLiveList(params = {}) {
-  const res = await Widget.http.get(`${API}/mf/${params.platform}`, {
+  if (!params.platform) {
+    throw new Error("缺少 platform 参数");
+  }
+
+  const url = `${API}/mf/${params.platform}`;
+  const res = await Widget.http.get(url, {
     headers: { "User-Agent": UA }
   });
 
+  if (!res?.data?.zhubo) {
+    throw new Error("直播数据异常");
+  }
+
   const groups = {};
-  const recent = load(RECENT_KEY);
 
-  for (const item of res.data.zhubo) {
-    if (!item.address || item.address.startsWith("rtmp")) continue;
+  res.data.zhubo.forEach(item => {
+    if (
+      !item.address ||
+      !item.title ||
+      item.address.startsWith("rtmp")
+    ) {
+      return;
+    }
 
-    const title = item.title.trim();
     const group = item.group || "默认分组";
-
     if (!groups[group]) groups[group] = [];
+
     groups[group].push({
       id: item.address,
-      type: "link",
-      title,
+      type: "url",
+      title: item.title,
       posterPath: item.img || "",
-      link: item.address,
+      videoUrl: item.address,
       mediaType: "tv",
       durationText: "LIVE"
     });
-  }
+  });
 
-  if (recent.length) {
-    groups["最近播放"] = recent;
-  }
-
-  return Object.keys(groups).map(k => ({
-    title: k,
-    items: groups[k]
+  return Object.keys(groups).map(title => ({
+    title,
+    items: groups[title]
   }));
 }
 
-/* ───────── WebView + 原生双通道 ───────── */
-async function loadDetail(link) {
-  const delay = await ping(link);
-
-  const recent = load(RECENT_KEY);
-  if (!recent.find(i => i.link === link)) {
-    recent.unshift({
-      id: link,
-      type: "link",
-      title: link.split("/").pop(),
-      link
-    });
-    save(RECENT_KEY, recent);
-  }
-
-  if (delay < 3000) {
-    return { videoUrl: link };
-  }
-
-  return {
-    webView: {
-      url: link,
-      userAgent: UA
-    }
-  };
-}
-
-/* ───────── 搜索 ───────── */
+/**
+ * 搜索模块
+ */
 async function searchLive(params = {}) {
   if (!params.keyword) return [];
 
@@ -148,30 +124,31 @@ async function searchLive(params = {}) {
     headers: { "User-Agent": UA }
   });
 
-  const result = [];
+  const results = [];
 
   for (const p of res.data.pingtai) {
-    const list = await Widget.http.get(`${API}/mf/${p.address}`, {
+    const listRes = await Widget.http.get(`${API}/mf/${p.address}`, {
       headers: { "User-Agent": UA }
     });
 
-    list.data.zhubo.forEach(i => {
+    listRes.data.zhubo.forEach(item => {
       if (
-        i.title &&
-        i.title.includes(params.keyword) &&
-        !i.address.startsWith("rtmp")
+        item.title &&
+        item.title.includes(params.keyword) &&
+        !item.address.startsWith("rtmp")
       ) {
-        result.push({
-          id: i.address,
-          type: "link",
-          title: i.title,
-          posterPath: i.img || "",
-          link: i.address,
-          mediaType: "tv"
+        results.push({
+          id: item.address,
+          type: "url",
+          title: item.title,
+          posterPath: item.img || "",
+          videoUrl: item.address,
+          mediaType: "tv",
+          durationText: "LIVE"
         });
       }
     });
   }
 
-  return result;
+  return results;
 }
