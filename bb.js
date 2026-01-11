@@ -4,18 +4,22 @@ var WidgetMetadata = {
   description: "⚝五折码：TOM.5⚝",
   author: "🅣🅞🅜",
   site: "@🅣🅞🅜",
-  version: "0.0.1",
+  version: "0.0.3",
   requiredVersion: "0.0.1",
   modules: [
     {
       title: "碧池直播",
-      requiresWebView: true,
+      requiresWebView: false,
       functionName: "getVideos",
       params: [
         {
           name: "category",
           title: "类型",
           type: "enumeration",
+
+          // ✅ 默认分类：卡哇伊
+          defaultValue: "jsonkawayi",
+
           enumOptions: [
             { title: "卡哇伊", value: "jsonkawayi" },
             { title: "咪狐", value: "jsonmihu" },
@@ -159,48 +163,39 @@ var WidgetMetadata = {
 
 async function getVideos(params = {}) {
   try {
-    if (!params.category) {
-      throw new Error("缺少必要参数: category");
-    }
+    const category = params.category || "jsonkawayi";
+    const url = `http://api.maiyoux.com:81/mf/${category}.txt`;
 
-    // 构建请求 URL，动态切换分类
-    const url = `http://api.maiyoux.com:81/mf/${params.category}.txt`;
-    console.log("[视频获取] 请求URL:", url);
-
-    // 发送请求
     const response = await Widget.http.get(url, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2)",
-        "Accept": "*/*"
+        "Content-Type": "application/octet-stream"
       }
     });
 
-    // 数据验证
     if (!response || !response.data) {
-      throw new Error("API无返回内容");
+      throw new Error("API 返回空数据");
     }
 
-    // 解析返回的 JSON 数据
-    let data;
-    if (typeof response.data === "string") {
-      data = JSON.parse(response.data);
-    } else {
-      data = response.data;
+    const data =
+      typeof response.data === "string"
+        ? JSON.parse(response.data)
+        : response.data;
+
+    if (!Array.isArray(data.zhubo)) {
+      throw new Error("API 数据结构异常");
     }
 
-    // 返回视频列表，适配 UI 显示
     return data.zhubo
-      .filter(v => v.address && v.title)  // 过滤无效数据
+      .filter(v => v.address && v.title)
       .map(v => ({
         id: v.address,
         type: "url",
         title: v.title.trim(),
-        posterPath: v.img || "",  // 获取封面图
-        videoUrl: v.address       // 视频播放 URL
+        posterPath: v.img || "",
+        videoUrl: v.address
       }));
-
-  } catch (err) {
-    console.error("视频获取失败:", err);
-    throw new Error(`视频获取失败: ${err.message}`);
+  } catch (e) {
+    throw new Error("视频获取失败: " + e.message);
   }
 }
