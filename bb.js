@@ -157,16 +157,17 @@ var WidgetMetadata = {
   ]
 };
 
-// 这部分代码为动态获取视频分类并切换的实现
 async function getVideos(params = {}) {
   try {
     if (!params.category) {
       throw new Error("缺少必要参数: category");
     }
 
+    // 构建请求 URL，动态切换分类
     const url = `http://api.maiyoux.com:81/mf/${params.category}.txt`;
     console.log("[视频获取] 请求URL:", url);
 
+    // 发送请求
     const response = await Widget.http.get(url, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2)",
@@ -174,10 +175,12 @@ async function getVideos(params = {}) {
       }
     });
 
+    // 数据验证
     if (!response || !response.data) {
       throw new Error("API无返回内容");
     }
 
+    // 解析返回的 JSON 数据
     let data;
     if (typeof response.data === "string") {
       data = JSON.parse(response.data);
@@ -185,22 +188,19 @@ async function getVideos(params = {}) {
       data = response.data;
     }
 
-    if (!data.zhubo || !Array.isArray(data.zhubo)) {
-      throw new Error("API数据结构异常");
-    }
-
+    // 返回视频列表，适配 UI 显示
     return data.zhubo
-      .filter(v => v.address && v.title)
+      .filter(v => v.address && v.title)  // 过滤无效数据
       .map(v => ({
         id: v.address,
         type: "url",
         title: v.title.trim(),
-        posterPath: v.img || "",
-        videoUrl: v.address
+        posterPath: v.img || "",  // 获取封面图
+        videoUrl: v.address       // 视频播放 URL
       }));
 
   } catch (err) {
-    console.error("模块执行失败:", err);
+    console.error("视频获取失败:", err);
     throw new Error(`视频获取失败: ${err.message}`);
   }
 }
