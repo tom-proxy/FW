@@ -31,15 +31,6 @@
       "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/TVlive.js"
     },
     {
-      "id": "aggregate_live_pro",
-      "title": "聚合直播 Pro",
-      "description": "ForwardWidgets最高规格聚合直播模块",
-      "requiredVersion": "0.0.1",
-      "version": "2.0.0",
-      "author": "Forward",
-      "url": "https://raw.githubusercontent.com/tom-proxy/FW/refs/heads/jk/juhe.js"
-    },
-    {
       "id": "live",
       "title": "直播(电视+网络)",
       "description": "⚝五折码：TOM.5⚝",
