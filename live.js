@@ -17,12 +17,12 @@ WidgetMetadata = {
                     description: "输入直播订阅链接地址",
                     placeholders: [
                         {
-                            title: "Kimentanm",
-                            value: "https://raw.githubusercontent.com/Kimentanm/aptv/master/m3u/iptv.m3u"
+                            title: "库",
+                            value: "https://bit.ly/jsnzkpg"
                         },
                         {
-                            title: "网络直播",
-                            value: "https://tv.iill.top/m3u/Live"
+                            title: "APTV",
+                            value: "https://add.aptv.app/https://bit.ly/iptv-aptv"
                         },
                         {
                             title: "smart(港澳台)",
