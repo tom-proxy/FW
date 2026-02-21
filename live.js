@@ -41,10 +41,6 @@ WidgetMetadata = {
                             value: "https://bit.ly/suxuang-v4"
                         },
                         {
-                            title: "123pan",
-                            value: "https://vip.123pan.cn/1814643527/tv/qwt.m3u"
-                        },
-                        {
                             title: "PlutoTV-美国",
                             value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_US.m3u"
                         },
@@ -205,11 +201,11 @@ WidgetMetadata = {
             ],
         },
     ],
-    version: "0.0.1",
+    version: "1.0.10",
     requiredVersion: "0.0.1",
-    description: "⚝五折码：TOM.5⚝",
-    author: "🅣🅞🅜",
-    site: "@🅣🅞🅜"
+    description: "解析直播订阅链接【五折码：CHEAP.5;七折码：CHEAP】",
+    author: "huangxd",
+    site: "https://github.com/huangxd-/ForwardWidgets"
 };
 
 
@@ -403,6 +399,7 @@ function parseM3UContent(content, iconList, bgColor, direction) {
                 backdropPath: backdropIcon || currentItem.cover || "https://i.miji.bid/2025/05/17/c4a0703b68a4d2313a27937d82b72b6a.png",
                 previewUrl: "", // 直播通常没有预览URL
                 link: url,
+                playerType: "system",
                 // 额外的元数据
                 metadata: {
                     group: currentItem.group,
@@ -427,35 +424,36 @@ async function loadDetail(link) {
     let videoUrl = link;
     let childItems = []
 
-    const formats = ['m3u8', 'mp4', 'mp3', 'flv', 'avi', 'mov', 'wmv', 'webm', 'ogg', 'mkv', 'ts'];
-    if (!formats.some(format => link.includes(format))) {
-        // 获取重定向location
-        const url = `https://redirect-check.hxd.ip-ddns.com/redirect-check?url=${link}`;
-
-        const response = await Widget.http.get(url, {
-            headers: {
-                "User-Agent": "AptvPlayer/1.4.6",
-            },
-        });
-
-        console.log(response.data)
-
-        if (response.data && response.data.location && formats.some(format => response.data.location.includes(format))) {
-            videoUrl = response.data.location;
-        }
-
-        if (response.data && response.data.error && response.data.error.includes("超时")) {
-            const hint_item = {
-                id: videoUrl,
-                type: "url",
-                title: "超时/上面直播不可用",
-                posterPath: "https://i.miji.bid/2025/05/17/561121fb0ba6071d4070627d187b668b.png",
-                backdropPath: "https://i.miji.bid/2025/05/17/561121fb0ba6071d4070627d187b668b.png",
-                link: videoUrl,
-            };
-            childItems = [hint_item]
-        }
-    }
+    // const formats = ['m3u8', 'mp4', 'mp3', 'flv', 'avi', 'mov', 'wmv', 'webm', 'ogg', 'mkv', 'ts'];
+    // if (!formats.some(format => link.includes(format))) {
+    //     // 获取重定向location
+    //     const url = `https://redirect-check.hxd.ip-ddns.com/redirect-check?url=${link}`;
+    //
+    //     const response = await Widget.http.get(url, {
+    //         headers: {
+    //             "User-Agent": "AptvPlayer/1.4.6",
+    //         },
+    //     });
+    //
+    //     console.log(response.data)
+    //
+    //     if (response.data && response.data.location && formats.some(format => response.data.location.includes(format))) {
+    //         videoUrl = response.data.location;
+    //     }
+    //
+    //     if (response.data && response.data.error && response.data.error.includes("超时")) {
+    //         const hint_item = {
+    //             id: videoUrl,
+    //             type: "url",
+    //             title: "超时/上面直播不可用",
+    //             posterPath: "https://i.miji.bid/2025/05/17/561121fb0ba6071d4070627d187b668b.png",
+    //             backdropPath: "https://i.miji.bid/2025/05/17/561121fb0ba6071d4070627d187b668b.png",
+    //             link: videoUrl,
+    //             playerType: "system",
+    //         };
+    //         childItems = [hint_item]
+    //     }
+    // }
 
     const item = {
         id: link,
@@ -465,6 +463,7 @@ async function loadDetail(link) {
             "Referer": link,
             "User-Agent": "AptvPlayer/1.4.6",
         },
+        playerType: "system",
         childItems: childItems,
     };
 
