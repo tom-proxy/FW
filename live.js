@@ -25,80 +25,8 @@ WidgetMetadata = {
                             value: "https://add.aptv.app/https://bit.ly/iptv-aptv"
                         },
                         {
-                            title: "smart(港澳台)",
-                            value: "https://smart.pendy.dpdns.org/m3u/merged_judy.m3u"
-                        },
-                        {
-                            title: "YanG-Gather1",
+                            title: "Gather",
                             value: "https://tv.iill.top/m3u/Gather"
-                        },
-                        {
-                            title: "YanG-Gather2",
-                            value: "https://raw.githubusercontent.com/YanG-1989/m3u/main/Gather.m3u"
-                        },
-                        {
-                            title: "suxuang",
-                            value: "https://bit.ly/suxuang-v4"
-                        },
-                        {
-                            title: "PlutoTV-美国",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_US.m3u"
-                        },
-                        {
-                            title: "PlutoTV-墨西哥",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_MX.m3u"
-                        },
-                        {
-                            title: "PlutoTV-意大利",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_IT.m3u"
-                        },
-                        {
-                            title: "PlutoTV-英国",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_GB.m3u"
-                        },
-                        {
-                            title: "PlutoTV-法国",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_FR.m3u"
-                        },
-                        {
-                            title: "PlutoTV-西班牙",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_ES.m3u"
-                        },
-                        {
-                            title: "PlutoTV-德国",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_DE.m3u"
-                        },
-                        {
-                            title: "PlutoTV-智利",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_CL.m3u"
-                        },
-                        {
-                            title: "PlutoTV-加拿大",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_CA.m3u"
-                        },
-                        {
-                            title: "PlutoTV-巴西",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_BR.m3u"
-                        },
-                        {
-                            title: "PlutoTV-阿根廷",
-                            value: "https://raw.githubusercontent.com/HelmerLuzo/PlutoTV_HL/refs/heads/main/tv/m3u/PlutoTV_tv_AR.m3u"
-                        },
-                        {
-                            title: "全球",
-                            value: "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8"
-                        },
-                        {
-                            title: "IPTV1",
-                            value: "https://raw.githubusercontent.com/skddyj/iptv/main/IPTV.m3u"
-                        },
-                        {
-                            title: "IPTV2-CN",
-                            value: "https://iptv-org.github.io/iptv/countries/cn.m3u"
-                        },
-                        {
-                            title: "IPTV3",
-                            value: "https://cdn.jsdelivr.net/gh/Guovin/iptv-api@gd/output/result.m3u"
                         },
                     ]
                 },
